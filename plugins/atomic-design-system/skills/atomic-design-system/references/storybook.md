@@ -49,6 +49,7 @@ export const KeyboardActivates: Story = {
 ```
 - `satisfies Meta<typeof X>` gives type errors for missing required args.
 - Query by role and accessible name, not test IDs — that also tests accessibility.
+- Known gotcha: `@testing-library/user-event` before 14.6 mishandles arrow keys inside native radio groups. If a radio-group `play` test fails only on arrow keys, check that version before changing the component.
 
 ## Required stories per component
 

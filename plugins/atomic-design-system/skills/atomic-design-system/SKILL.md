@@ -108,7 +108,7 @@ Run the scripts on the code (`lint-tokens`, `lint-levels`, `contrast` on the tok
 | Command | Does |
 |---|---|
 | `node scripts/ramp.mjs '#1C75BC' [--name blue --prefix ns --css\|--json]` | OKLCH 50–950 ramp anchored on the brand hex, with contrast vs white/black per step |
-| `node scripts/contrast.mjs <fg> <bg> [--min 3]` or `--css tokens.css --pairs pairs.json [--scope sel] [--media query]` | WCAG contrast; exit 1 on failure |
+| `node scripts/contrast.mjs <fg> <bg> [--min 3]` or `--css tokens.css --pairs pairs.json [--scope sel] [--media query] [--layer spec]…` | WCAG contrast; exit 1 on failure |
 | `node scripts/lint-tokens.mjs <dir> [--strict]` | Raw colors/fonts/px and atom margins in CSS; exit 1 on errors |
 | `node scripts/lint-levels.mjs <dir>` | Upward imports between atomic levels; exit 1 on violations |
 | `node scripts/scaffold.mjs <Name> --level <level> --dir src/components --prefix <ns>` | Component + CSS module + stories + test + index from `assets/component-template/` |

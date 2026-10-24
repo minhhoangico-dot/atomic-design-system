@@ -65,7 +65,7 @@ Rules:
 - **Body, labels, inputs, tables: Be Vietnam Pro** (400/500/600) — designed by Vietnamese type designers; its stacked marks (Ẫ, Ể, Ợ) get ~0.40em of space above capitals vs ~0.24em in Montserrat, so tone marks stay legible for older readers. Line-height ≥ 1.5.
 - Load with the Vietnamese subset: `https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap&subset=vietnamese`.
 - Tokens: `--fdc-font-family-heading: 'Montserrat', 'Be Vietnam Pro', system-ui, sans-serif;` `--fdc-font-family-body: 'Be Vietnam Pro', system-ui, sans-serif;`
-- Body size: 18px (`1.125rem`) on patient/family surfaces, 16px on staff tools. Never below 14px.
+- Body size: 18px (`1.125rem`) on patient/family surfaces, 16px on staff tools. Never below 14px. In FDC's `tokens.css` make the patient size the default (`--fdc-font-size-body: var(--fdc-font-size-300)`, same for `--fdc-font-size-label`) and let staff apps opt into density with `[data-density='compact'] { --fdc-font-size-body: var(--fdc-font-size-200); }` — the safe default protects the most vulnerable readers.
 - Check with `assets/vi-glyph-test.html` after any font or line-height change. Test string: "ẪỄỖẲỰẬ — Nguyễn Thị Ánh Tuyết, Trường Sơn".
 - Normalize text input to Unicode NFC (`value.normalize('NFC')`): Telex/VNI keyboards can produce decomposed characters that break search and matching.
 

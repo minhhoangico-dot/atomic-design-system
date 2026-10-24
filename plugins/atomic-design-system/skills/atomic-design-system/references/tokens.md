@@ -89,7 +89,21 @@ The W3C Design Tokens Community Group format reached its first stable version (2
 
 ## 6. Themes and user preferences
 
-- Same token names, different values: `:root` holds the default theme; `[data-theme='dark']` re-declares only semantic tokens. Respect `prefers-color-scheme` when no explicit theme is set.
+- Same token names, different values: `:root` holds the default theme; `[data-theme='dark']` re-declares only semantic tokens.
+- **Follow the OS setting without duplicating the dark block.** Copying dark values into an `@media (prefers-color-scheme: dark)` block as well means two lists to keep in sync. Instead, set `data-theme` before first paint and keep one dark block in CSS:
+  ```html
+  <script>
+    // In <head>, before stylesheets render: saved choice wins, else the OS setting.
+    (function () {
+      var root = document.documentElement, mq = matchMedia('(prefers-color-scheme: dark)'), saved;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var apply = function () { root.dataset.theme = saved === 'light' || saved === 'dark' ? saved : mq.matches ? 'dark' : 'light'; };
+      apply();
+      mq.addEventListener('change', apply);
+    })();
+  </script>
+  ```
+  If the page must work with JavaScript disabled, duplicate the block under `@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { … } }` and check both with `contrast.mjs`.
 - **Large-text / senior scale:** `[data-scale='large']` remaps body size, control size and target size. Do not use CSS `zoom`.
 - `@media (prefers-contrast: more)`: stronger borders and muted text. `@media (forced-colors: active)`: keep real borders/outlines (system colors replace yours; backgrounds may disappear).
 - Nested surfaces (card in panel) need distinct layer tokens (`bg-surface`, `bg-inset`, or Carbon-style layer-01/02/03) so contrast holds at each depth.
@@ -97,6 +111,6 @@ The W3C Design Tokens Community Group format reached its first stable version (2
 ## 7. Checks
 
 - Contrast for every semantic pair in every theme:
-  `node scripts/contrast.mjs --css tokens.css --pairs pairs.json` then `--scope "[data-theme='dark']"` and `--media "@media (prefers-contrast: more)"`. Start pairs from `assets/contrast-pairs.template.json`.
+  `node scripts/contrast.mjs --css tokens.css --pairs pairs.json` then `--scope "[data-theme='dark']"` and `--media "@media (prefers-contrast: more)"`. Check stacked states with repeated `--layer` flags, applied in order like the cascade: `--layer "[data-theme='dark']" --layer "@media (prefers-contrast: more) { [data-theme='dark'] }"`. Start pairs from `assets/contrast-pairs.template.json`.
 - No raw values in components: `node scripts/lint-tokens.mjs src/components` (hex, rgb(), named colors, literal fonts, px other than 0/1).
 - Document tokens in Storybook (`Tokens/Colors`, `Tokens/Typography`) generated from the same source so docs cannot drift.

@@ -6,10 +6,15 @@
 //   node contrast.mjs --css tokens.css --pairs pairs.json  semantic token pairs
 //   node contrast.mjs --css tokens.css --scope '[data-theme="dark"]' --pairs pairs.json
 //   node contrast.mjs --css tokens.css --media '@media (prefers-contrast: more)' --pairs pairs.json
+//   node contrast.mjs --css tokens.css --pairs pairs.json \
+//       --layer "[data-theme='dark']" --layer "@media (prefers-contrast: more) { [data-theme='dark'] }"
 //
 // pairs.json: [{ "fg": "--ds-color-fg-default", "bg": "--ds-color-bg-surface", "min": 4.5, "note": "body text" }]
-// fg/bg may be hex values or custom-property names (resolved from --css; a
-// --scope block is layered on top of :root so theme overrides are honored).
+// fg/bg may be hex values or custom-property names, resolved from --css. Values
+// are layered like the cascade: :root first, then --scope, then --media (read
+// inside that at-rule, from the --scope selector or :root), then each --layer in
+// order. A --layer is a selector, or "@media (...) { selector }" for a rule nested
+// in one at-rule. Use layers to check stacked states (dark + more contrast).
 // Exit code 1 if any pair is below its minimum, so it can gate CI.
 
 import { readFileSync } from 'node:fs';
@@ -26,6 +31,13 @@ const cssPath = opt('--css');
 const scope = opt('--scope');
 const pairsPath = opt('--pairs');
 const media = opt('--media');
+const layers = [];
+for (let l = opt('--layer'); l !== undefined; l = opt('--layer')) layers.push(l);
+
+const readLayer = (css, spec) => {
+  const m = /^(@[^{]+)\{\s*([^}]*)\s*\}?\s*$/.exec(spec.trim());
+  return m ? readCssVars(css, m[2].trim() || ':root', m[1].trim()) : readCssVars(css, spec);
+};
 
 let vars = {};
 if (cssPath) {
@@ -35,6 +47,7 @@ if (cssPath) {
     ...(scope ? readCssVars(css, scope) : {}),
     ...(media ? readCssVars(css, scope ?? ':root', media) : {}),
   };
+  for (const l of layers) Object.assign(vars, readLayer(css, l));
 }
 
 const resolve = (v) => (v.startsWith('--') ? resolveVar(`var(${v})`, vars) : v);
