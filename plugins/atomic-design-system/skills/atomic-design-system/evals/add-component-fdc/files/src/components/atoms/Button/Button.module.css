@@ -1,14 +1,14 @@
 .Button {
-  min-block-size: var(--fdc-size-target-min);
-  padding-inline: var(--fdc-space-400);
-  border-radius: var(--fdc-radius-md);
-  font-family: var(--fdc-font-family-body);
-  background: var(--fdc-color-bg-surface);
-  color: var(--fdc-color-fg-default);
-  border: 1px solid var(--fdc-color-border-default);
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-15);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--text-default);
+  border: 1px solid var(--border-control);
 }
 .Button:where([data-variant='primary']) {
-  background: var(--fdc-color-bg-brand-emphasis);
-  color: var(--fdc-color-fg-on-emphasis);
+  background: var(--action-primary-bg);
+  color: var(--text-on-action);
 }
-.Button:focus-visible { outline: var(--fdc-focus-ring-width) solid var(--fdc-color-border-focus); outline-offset: var(--fdc-focus-ring-offset); }
+.Button:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring); outline-offset: var(--focus-ring-offset); }
