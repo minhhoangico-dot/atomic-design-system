@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: audit-booking-form
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  review.md ranks problems by user impact and covers: placeholder-only inputs (no labels),
+  the clickable div that is not a keyboard-accessible button, removed focus outline, white
+  text on light green (~2:1) and other contrast failures, tiny text/targets for older users,
+  vague error ("Sai") shown while typing and not linked to the field, raw hex/no tokens,
+  margins on the root, and missing support for family members booking for someone else.

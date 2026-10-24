@@ -1,0 +1,34 @@
+/*
+ * Tokens only: no raw hex, px, or font names (run lint-tokens.mjs).
+ * No outer margin: the parent or a layout primitive places this component.
+ * Variants via :where([data-*]) keep specificity at 0 so consumers can override.
+ */
+.__NAME__ {
+  --__KEBAB__-bg: var(--__PREFIX__-color-bg-surface);
+  --__KEBAB__-fg: var(--__PREFIX__-color-fg-default);
+
+  background: var(--__KEBAB__-bg);
+  color: var(--__KEBAB__-fg);
+  font-family: var(--__PREFIX__-font-family-body);
+  padding: var(--__PREFIX__-space-inset-md);
+  border-radius: var(--__PREFIX__-radius-md);
+}
+
+.__NAME__:where([data-variant='emphasis']) {
+  --__KEBAB__-bg: var(--__PREFIX__-color-bg-brand-emphasis);
+  --__KEBAB__-fg: var(--__PREFIX__-color-fg-on-emphasis);
+}
+
+.__NAME__:where([data-size='small']) {
+  padding: var(--__PREFIX__-space-inset-sm);
+}
+
+.__NAME__:where([data-size='large']) {
+  padding: var(--__PREFIX__-space-inset-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .__NAME__ {
+    transition: none;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "atomic-design-system",
+  "owner": {
+    "name": "minhhoangico-dot"
+  },
+  "metadata": {
+    "description": "Atomic design system skill: tokens, components, Storybook, accessibility, with an FDC clinic brand profile."
+  },
+  "plugins": [
+    {
+      "name": "atomic-design-system",
+      "source": "./plugins/atomic-design-system",
+      "description": "Build, extend and audit design systems with Brad Frost's atomic design: design tokens, atoms to pages, React + Storybook, WCAG 2.2, healthcare and older-adult UX, Vietnamese locale.",
+      "version": "0.1.0",
+      "category": "design",
+      "keywords": ["design-system", "atomic-design", "design-tokens", "storybook", "accessibility", "react", "healthcare", "vietnamese"]
+    }
+  ]
+}
