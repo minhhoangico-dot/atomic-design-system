@@ -1,6 +1,6 @@
 # Brand profile: FDC Medical Group — Bác sĩ Gia đình (clinic) and Viện điều dưỡng FDC (nursing home), Hanoi
 
-Load this profile whenever the work is for FDC: the family-medicine clinic (Phòng khám Đa khoa Bác sĩ Gia đình Hà Nội, bacsigiadinhhanoi.vn, 75 Hồ Mễ Trì) or its nursing home (fdcmedical.vn). It supplies the brand values and local rules; the method comes from the other references.
+Load this profile whenever the work is for FDC: the family-medicine clinic (Công ty cổ phần Trung tâm bác sĩ gia đình Hà Nội, bacsigiadinhhanoi.vn, 75 đường Hồ Mễ Trì, Phường Đại Mỗ, Hà Nội, minhhb@bacsigiadinhhanoi.vn) or its nursing home (Điều dưỡng FDC, fdcmedical.vn, Thôn Long Phú, Phú Cát, Hà Nội, fdc@bacsigiadinhhanoi.vn; tagline "Khơi nguồn sức khỏe, san sẻ âu lo"). Business registration: SĐKKD 0105378374 (Sở KH&ĐT Hà Nội, 24/6/2011); representative Hoàng Thị Mai Phương. It supplies the brand values and local rules; the method comes from the other references.
 
 ## Contents
 1. Where the system lives (read first)
@@ -90,11 +90,12 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
 
 ## 7. Inventory
 
-In the master and fdc-ui today (23 components):
+In the master and fdc-ui today (33 components):
 - **Layout:** Stack, Inline.
-- **Atoms:** Button (neutral/primary/hotline), TextField, Icon (24 FDC glyphs), Avatar, TextLink.
-- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice.
-- **Organisms:** ErrorSummary, ResultLookupForm, ContactForm.
-- **Templates:** BookingStep.
+- **Atoms:** Button (neutral/primary/hotline), TextField, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink.
+- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup, SummaryList, CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel, HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice.
+- **Organisms:** Header (menu with tap/keyboard sub-menus, hotline, hours, CTA), Footer (contacts as text, legal lines), Dialog, IdleTimeoutDialog, ErrorSummary, ResultLookupForm, ContactForm.
+- **Templates:** SiteLayout (the only `<main>`), BookingStep.
+- **Pages (fdc-ui Storybook):** full booking flow (service → who → time → details → check answers → confirmation, with idle timeout) and a care-advice page; fixtures in `src/fixtures/site.ts` hold both sites' real menus and footers.
 
-Next candidates: site Header and Footer (logo, nav, hotline slot), CareCard (non-urgent/urgent/emergency), SummaryList ("check your answers"), IdleTimeoutDialog, DataTable for staff. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
+Still needed: the nursing-home logo as a file in code (only the clinic logo is in fdc-ui), a DataTable and staff-tool templates for FDC Manager, and doctor-approved care-advice wording. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
