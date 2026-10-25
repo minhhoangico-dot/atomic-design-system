@@ -7,8 +7,11 @@
 //
 // Errors  : raw colors (#hex, rgb(), hsl(), oklch(), named colors in color props),
 //           literal font-family names, margin on atom root classes (atoms must not
-//           position themselves; the parent or a layout primitive does).
-// Warnings: px lengths that are not 0 or 1px hairlines (with --strict they are errors).
+//           position themselves; the parent or a layout primitive does),
+//           `transition: all` (or no property), and transitions/animations of layout
+//           properties (width, height, top, left, margin…) — animate transform/opacity.
+// Warnings: px lengths that are not 0 or 1px hairlines (with --strict they are errors);
+//           raw durations in transition/animation (use duration tokens).
 // Exit 1 on any error.
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
@@ -70,6 +73,21 @@ for (const root of roots) {
       if (FONT.test(decl)) report('error', rel, n, 'Literal font family. Use var(--ds-font-family-body|heading).', raw);
       if (isAtom && selector === rootClass && /^margin(-[\w]+)?\s*:/.test(decl) && !/:\s*0\s*;?$/.test(decl)) {
         report('error', rel, n, 'Margin on an atom root. Spacing belongs to the parent (Stack/Inline/Grid gap).', raw);
+      }
+      const motion = decl.match(/^(transition(?:-property)?|animation)\s*:\s*([^;]+)/i);
+      if (motion && !/^\s*(none|inherit|initial|unset)\s*$/i.test(motion[2])) {
+        const [, prop, value] = motion;
+        const parts = value.split(',').map((x) => x.trim());
+        if (/^transition/i.test(prop)) {
+          const first = (x) => x.split(/\s+/)[0];
+          if (parts.some((x) => first(x) === 'all' || (prop.toLowerCase() === 'transition' && /^[\d.]|^var\(/.test(first(x))))) {
+            report('error', rel, n, 'transition: all. Name the properties (e.g. background-color, opacity, transform).', raw);
+          }
+          if (parts.some((x) => /^(width|height|(min|max)-(width|height)|top|left|right|bottom|inset|margin[\w-]*|padding[\w-]*|inline-size|block-size)$/.test(first(x)))) {
+            report('error', rel, n, 'Animating a layout property. Animate transform or opacity instead (cheap, no reflow).', raw);
+          }
+        }
+        if (/(?<![\w-])\d*\.?\d+m?s\b/.test(value)) report('warning', rel, n, 'Raw duration. Use a duration token (e.g. var(--ds-duration-base)) so reduced-motion can adjust it.', raw);
       }
       for (const m of decl.matchAll(PX)) {
         const v = Number(m[1]);

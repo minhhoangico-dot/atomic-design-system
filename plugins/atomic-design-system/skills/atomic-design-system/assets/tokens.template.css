@@ -85,8 +85,11 @@
   --ds-line-height-tight: 1.3; /* headings; ≥1.3 for stacked diacritics */
   --ds-line-height-body: 1.55;
 
+  /* Feedback (color, opacity, shadow) vs movement (transform). Reduced motion removes
+   * movement but keeps short fades, so state changes stay visible. */
   --ds-duration-fast: 120ms;
   --ds-duration-base: 200ms;
+  --ds-duration-move: 250ms;
   --ds-easing-standard: cubic-bezier(0.2, 0, 0, 1);
 
   /* ---------- Tier 2: semantic (light theme = default) ---------- */
@@ -197,8 +200,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --ds-duration-fast: 0ms;
-    --ds-duration-base: 0ms;
+    --ds-duration-move: 0ms;
   }
 }
 

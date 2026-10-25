@@ -85,7 +85,12 @@ The W3C Design Tokens Community Group format reached its first stable version (2
 - **Font families as tokens:** `--ds-font-family-heading`, `--ds-font-family-body`, with fallbacks. Load only needed weights and the right language subset.
 - **Space:** 4px base expressed in rem (`0.25rem` steps). Semantic aliases: `inset-*` (padding), `stack-*` (vertical gap), `inline-*` (horizontal gap).
 - **Sizes:** control heights and minimum target size as tokens (`--ds-size-control-md: 2.75rem`, `--ds-size-target-min`). WCAG 2.5.8 minimum is 24×24 CSS px; 44×44 is the comfortable default for touch and older users.
-- **Radius, shadow, z-index, duration, easing** as tokens. Durations go to 0 under `prefers-reduced-motion: reduce`.
+- **Radius, shadow, z-index, duration, easing** as tokens.
+- **Motion.** Every animation should answer something the user did or show a change of state; nothing moves on its own.
+  - Split durations by job: `duration-fast` / `duration-base` (120–200ms) for feedback (color, opacity, shadow), and `duration-move` (200–300ms) for things that travel (transform).
+  - Animate only `transform` and `opacity`, plus color for feedback. Never `transition: all`, and never width, height, top, left, margin or padding (they reflow the page and stutter on cheap phones). `lint-tokens.mjs` flags both.
+  - Animations must be interruptible: a second click mid-animation goes to the new state. Anything that plays more than 5 seconds needs pause/stop (WCAG 2.2.2). Nothing flashes more than 3 times a second.
+  - **Reduced motion removes movement, not feedback.** Under `prefers-reduced-motion: reduce`, set `duration-move` to 0 (or swap the slide for a short fade) and keep the short color and opacity fades. A global `* { transition-duration: 0 !important; animation-duration: 0 !important }` is wrong: spinners freeze, so the page looks stuck, and state changes become hard to notice.
 
 ## 6. Themes and user preferences
 

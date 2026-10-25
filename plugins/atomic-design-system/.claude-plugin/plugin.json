@@ -1,6 +1,6 @@
 {
   "name": "atomic-design-system",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Build, extend and audit design systems with Brad Frost's atomic design: design tokens, atoms to pages, React + Storybook, WCAG 2.2, healthcare and older-adult UX, Vietnamese locale. Includes the FDC (Bác sĩ Gia đình) brand profile.",
   "author": {
     "name": "minhhoangico-dot"

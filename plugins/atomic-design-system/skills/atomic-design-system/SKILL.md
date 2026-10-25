@@ -1,6 +1,6 @@
 ---
 name: atomic-design-system
-description: Builds, extends, and audits UI design systems using Brad Frost's atomic design (design tokens, atoms, molecules, organisms, templates, pages) with React, TypeScript, CSS Modules and Storybook, including WCAG 2.2 accessibility, healthcare and older-adult UX, and brand profiles (FDC family-doctor clinic and nursing home in Vietnam included). Use whenever the user wants to create a design system, component library, style guide or UI kit; define or theme design tokens or brand colors; add, refactor or review a button, form field, card, header or any reusable component; decide whether something is an atom, molecule or organism; set up Storybook; build a screen or flow from existing components; or make UI accessible, elderly-friendly or Vietnamese-language — even if they don't say "atomic design" or "design system".
+description: Builds, extends, and audits UI design systems using Brad Frost's atomic design (design tokens, atoms, molecules, organisms, templates, pages) with React, TypeScript, CSS Modules and Storybook, including WCAG 2.2 accessibility, healthcare and older-adult UX, and brand profiles (FDC family-doctor clinic and nursing home in Vietnam included). Use whenever the user wants to create a design system, component library, style guide or UI kit; define or theme design tokens or brand colors; add, refactor or review a button, form field, card, header or any reusable component; decide whether something is an atom, molecule or organism; set up Storybook; build a screen or flow from existing components; check how screens actually look in a browser (phones, themes, focus, touch targets); or make UI accessible, elderly-friendly or Vietnamese-language — even if they don't say "atomic design" or "design system".
 ---
 
 # Atomic Design System
@@ -16,7 +16,8 @@ Atomic design is a **mental model, not a sequence**: think in parts (tokens → 
 | No system yet; user wants one (from a logo, website, brand guide, screenshots, or an existing product) | **A. Build the system** |
 | A system exists; user needs a new or changed component | **B. Add or change a component** |
 | A system exists; user needs a screen, page or flow | **C. Build a screen** |
-| User asks whether UI/code is accessible, consistent or on-system | **D. Audit** |
+| User asks whether UI/code is accessible, consistent or on-system | **D. Audit** (code) |
+| UI was built or changed and must be checked as rendered: phones, themes, focus, targets, look | **E. Visual review** |
 
 Before anything else, look for an existing system: a `DESIGN.md`, `tokens.css`/`*.tokens.json`, a `src/components/{atoms,molecules,…}` tree, or Storybook config. Extend what exists; never silently start a second system.
 
@@ -78,14 +79,25 @@ Copy this checklist and work through it:
 
 ## Mode D — Audit
 
-Run the scripts on the code (`lint-tokens`, `lint-levels`, `contrast` on the token file), then review by reading against: rules 1–9 above, the WCAG table and ARIA patterns in `references/accessibility.md`, and the Definition of Done in `references/governance.md`. Report findings ranked by user impact (blocks a task > causes errors > inconsistency > polish), each with the file/line, the rule, and the concrete fix.
+Run the scripts on the code (`lint-tokens`, `lint-levels`, `contrast` on the token file), then review by reading against: rules 1–9 above, the WCAG table and ARIA patterns in `references/accessibility.md`, and the Definition of Done in `references/governance.md`. Report findings ranked by user impact (blocks a task > causes errors > inconsistency > polish), each with the file/line, the rule, and the concrete fix. For how the UI renders (phones, themes, focus, look), follow with Mode E.
+
+## Mode E — Visual review
+
+Code can be on-system and still look wrong or fail on a phone. Render it, measure it, then judge it — `references/visual-review.md` has the loop, severity scale, heuristics and report format.
+1. Build Storybook (or start the app); review the built output.
+2. Measure in a real browser: `node scripts/shots.mjs --storybook storybook-static --themes <every theme>` (or `--page <file|url>`). It checks sideways scroll, real touch-target size, text size, clipped text, visible focus, story and console errors, and axe, at 320/390/768/1280, and saves screenshots. No browser, no review: never guess instead.
+3. Look at the screenshots and note hierarchy, nesting, emphasis, copy and calm *before* reading the measured report; then merge — measurements win on anything measurable.
+4. Confirm each Blocker and High against its screenshot; score the ten heuristics; check cognitive load.
+5. Report ranked by severity with evidence (`visual-review.md` §7); fix through Modes B/C; re-run until 0 Blockers.
+
+In Claude Code the plugin's **`design-review`** subagent runs this loop read-only, which keeps the reviewer independent of whoever wrote the code; use it after Modes B and C.
 
 ## Review checklist (before calling any UI work done)
 
 - [ ] Every element maps to an existing component or a named recipe/proposal.
 - [ ] `lint-tokens`, `lint-levels` and tests pass; no raw colors, sizes or fonts.
 - [ ] Contrast passes in every theme; focus visible; keyboard path works; labels visible.
-- [ ] Works at 320px, 200% zoom, large-text mode, and with long target-language text.
+- [ ] Works at 320px, 200% zoom, large-text mode, and with long target-language text — `shots.mjs` reports 0 Blockers in every theme.
 - [ ] Copy follows the content rules and brand voice; one primary action per view.
 - [ ] Stories exist for states and stress cases; page story for screens.
 
@@ -101,9 +113,10 @@ Run the scripts on the code (`lint-tokens`, `lint-levels`, `contrast` on the tok
 | `references/accessibility.md` | Any interactive component, form, color, or audit; older-user sizing |
 | `references/content-patterns.md` | UI copy, error messages, forms, dates/phones/names, healthcare flows |
 | `references/governance.md` | Definition of Done, statuses, versioning, deprecation, contributions |
+| `references/visual-review.md` | Mode E: render-measure-judge loop, severity, heuristics, product-screen taste, report format |
 | `references/brands/<brand>.md` | Work for that brand (e.g. `fdc.md`) |
 
-## Scripts and assets (Node ≥ 18, no dependencies; run, don't read)
+## Scripts and assets (Node ≥ 18, no dependencies except Playwright for `shots.mjs`; run, don't read)
 
 | Command | Does |
 |---|---|
@@ -112,7 +125,12 @@ Run the scripts on the code (`lint-tokens`, `lint-levels`, `contrast` on the tok
 | `node scripts/lint-tokens.mjs <dir> [--strict]` | Raw colors/fonts/px and atom margins in CSS; exit 1 on errors |
 | `node scripts/lint-levels.mjs <dir>` | Upward imports between atomic levels; exit 1 on violations |
 | `node scripts/scaffold.mjs <Name> --level <level> --dir src/components --prefix <ns>` | Component + CSS module + stories + test + index from `assets/component-template/` |
+| `node scripts/shots.mjs --storybook <dir\|url> \| --page <file\|url> [--themes a,b] [--target-min 44] [--filter re]` | Visual review in a real browser: overflow, target size, text size, clipping, focus visibility, axe; report + screenshots; exit 1 on Blockers (needs Playwright; axe-core optional) |
 | `assets/tokens.template.css`, `assets/contrast-pairs.template.json` | Starting token file (3 tiers, themes, preferences) and the pairs that must pass |
 | `assets/vi-glyph-test.html` | Visual check of Vietnamese stacked diacritics per font and line-height |
 
 Script paths are relative to this skill's directory (`${CLAUDE_SKILL_DIR}` in Claude Code).
+
+## Companion skills
+
+For creative surfaces (a campaign page, a new brand's first landing page), Anthropic's official `frontend-design` skill adds strong guidance on taste and on avoiding the generic AI look. When the two disagree, the brand profile and the rules above win: product screens favor calm, consistent and accessible over bold. Install third-party UI skills only after reading what their scripts download, which hooks they add, and what they send off the machine.

@@ -16,7 +16,7 @@ Load this profile whenever the work is for FDC: the family-medicine clinic (Côn
 ## 1. Where the system lives (read first)
 
 - **Master: Claude Design system "FDC Medical Group"** — https://claude.ai/artifact/EZhBJY8xppjGRBpCyPV1PG. Tokens (`project/tokens.json`), the brand book (`project/README.md`), component guidelines and previews, logos, icons and service/specialty images live there. Read its README and tokens before designing anything; they win over this profile if they differ.
-- **Code mirror: `minhhoangico-dot/fdc-ui`** (React + TypeScript + CSS Modules + Storybook). `design/fdc-medical-group/tokens.json` is a copy of the master; `npm run tokens` generates `src/tokens/tokens.css`. Components are built there and published back to the master as `components/bundle.js` (`window.FDC`) with `npm run build:design`.
+- **Code mirror: `minhhoangico-dot/fdc-ui`** (React + TypeScript + CSS Modules + Storybook). `design/fdc-medical-group/tokens.json` is a copy of the master; `npm run tokens` generates `src/tokens/tokens.css`. Components are built there and published back to the master as `components/bundle.js` (`window.FDC`) with `npm run build:design`. fdc-ui carries a copy of this skill and the `design-review` agent in `.claude/` plus a `CLAUDE.md`, so opening that repo in Claude Code is enough; `npm run check` and `npm run review:visual` run every check.
 - **Sync directions.** Tokens and guidelines: Claude Design → code (copy tokens.json, regenerate, re-run contrast in both themes). Component behavior: code → Claude Design (build, `node scripts/check-design-previews.mjs`, then publish the changed `project/` files and, last, the index with a new `lastChange`).
 - **Token names are unprefixed** and identical everywhere (`--brand-600`, `--space-15`, `--font-body`), because Claude Design compiles `tokens.json` to those names. Components use the semantic names (§3).
 
@@ -47,7 +47,7 @@ Two themes share every token name; set `data-theme="clinic"` (default, blue) or 
 
 Semantic aliases components must use: `action-primary-bg`, `action-primary-bg-hover`, `text-on-action`, `text-default`, `text-muted` (→ ink-soft), `text-link`, `focus-ring`, `status-success-text`, `status-error-text`, `hotline`. Contrast pairs live in fdc-ui `design/contrast-pairs.json`; run `contrast.mjs` with and without `--scope "[data-theme='nursing-home']"` after any color change.
 
-Rules: one primary action per view; pink means "call us", red means "something needs fixing", and they never appear as each other; green never carries white text; logos only on white or `surface-alt`.
+Rules: one primary action per view; pink means "call us", red means "something needs fixing", and they never appear as each other; green never carries white text; logos only on white or `surface-alt`. Links (`text-link`) sit on `surface` or `brand-50`; on `surface-alt` they fall just under 4.5:1 (4.50 clinic, 4.33 nursing home), so use `brand-700` text there.
 
 ## 4. Typography and sizing
 

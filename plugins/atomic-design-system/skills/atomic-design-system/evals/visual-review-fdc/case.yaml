@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: visual-review-fdc
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  review.md is based on rendering booking.html in a browser (screenshots or measurements at named
+  widths), not only on reading the code, and finds the four seeded problems ranked by severity:
+  the page scrolls sideways on phones because the hotline banner cannot wrap; focus is invisible
+  on every link and button (outline removed, no replacement); the time-slot buttons are 36px
+  tall, under the 44px target for older patients; and three cards are nested inside each other.

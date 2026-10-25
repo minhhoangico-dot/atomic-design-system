@@ -11,7 +11,7 @@
       "name": "atomic-design-system",
       "source": "./plugins/atomic-design-system",
       "description": "Build, extend and audit design systems with Brad Frost's atomic design: design tokens, atoms to pages, React + Storybook, WCAG 2.2, healthcare and older-adult UX, Vietnamese locale.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "category": "design",
       "keywords": ["design-system", "atomic-design", "design-tokens", "storybook", "accessibility", "react", "healthcare", "vietnamese"]
     }
