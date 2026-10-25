@@ -43,9 +43,10 @@ Two themes share every token name; set `data-theme="clinic"` (default, blue) or 
 | `accent-600`, `accent-cta` | #db227c, #db1f7a | same | **Hotline only** (number, icon, call button) |
 | `ink`, `ink-soft`, `ink-subtle` | #333, #595959, #767676 | same | Text, secondary text, placeholders |
 | `danger` | #b42318 | same | Errors (6.6:1); never pink for errors |
+| `status-info-bg` / `-border` / `-text` | brand-50 / brand-600 / brand-800 | same aliases | Pending work and info tags ("Chờ gửi · còn 27 giây"); text 6.9:1 clinic, 8.1:1 nursing home. Never green for pending |
 | `border-control` | #767676 | same | Field and tile borders (3:1+) |
 
-Semantic aliases components must use: `action-primary-bg`, `action-primary-bg-hover`, `text-on-action`, `text-default`, `text-muted` (→ ink-soft), `text-link`, `focus-ring`, `status-success-text`, `status-error-text`, `hotline`. Contrast pairs live in fdc-ui `design/contrast-pairs.json`; run `contrast.mjs` with and without `--scope "[data-theme='nursing-home']"` after any color change.
+Semantic aliases components must use: `action-primary-bg`, `action-primary-bg-hover`, `text-on-action`, `text-default`, `text-muted` (→ ink-soft), `text-link`, `focus-ring`, `status-success-text`, `status-error-text`, `status-info-bg`, `status-info-border`, `status-info-text`, `hotline`. Contrast pairs live in fdc-ui `design/contrast-pairs.json`; run `contrast.mjs` with and without `--scope "[data-theme='nursing-home']"` after any color change.
 
 Rules: one primary action per view; pink means "call us", red means "something needs fixing", and they never appear as each other; green never carries white text; logos only on white or `surface-alt`. Links (`text-link`) sit on `surface` or `brand-50`; on `surface-alt` they fall just under 4.5:1 (4.50 clinic, 4.33 nursing home), so use `brand-700` text there.
 
@@ -88,14 +89,36 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
 | Sent | Đã gửi. Chúng tôi sẽ gọi lại cho bạn sớm. |
 | Help line label | Cần giúp? Gọi tổng đài |
 
+### Staff tools (version 2.1, from the hoso app)
+- **Buttons**
+  - One primary button per screen state.
+  - Secondary buttons are white with a brand edge.
+  - An unavailable button has a dashed edge and always says why (Button `disabledReason`).
+  - Labels say exactly what will happen ("Dùng người và lượt khám này", "Nhờ Minh kiểm tra").
+- **Empty and invalid fields**
+  - An empty field is neutral: grey "Chưa điền · ví dụ 78".
+  - Show red only when a typed value is wrong, or after check/review.
+  - A choice group reports one error with one red bar.
+- **Counts**
+  - Keep "mục còn thiếu" (to do) and "ô chưa lưu" (unsaved) as separate counts.
+- **Codes and emphasis**
+  - Name first, code after it, lighter: "Tăng huyết áp (I10)".
+  - Green only for success; pending work uses `status-info`.
+  - Bold only emphasizes values; attention gets a StatusTag word label.
+- **Shortcuts**
+  - Ctrl combinations only, shown with Kbd. Single letters misfire with Telex.
+- **Layout**
+  - Use the compact one-row Header; on phones it collapses to a bar with the person's name, date of birth and record code.
+  - Long lists page clearly: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›".
+
 ## 7. Inventory
 
-In the master and fdc-ui today (33 components):
+In the master and fdc-ui today (35 components, version 2.1):
 - **Layout:** Stack, Inline.
-- **Atoms:** Button (neutral/primary/hotline), TextField, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink.
-- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup, SummaryList, CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel, HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice.
-- **Organisms:** Header (menu with tap/keyboard sub-menus, hotline, hours, CTA), Footer (contacts as text, legal lines), Dialog, IdleTimeoutDialog, ErrorSummary, ResultLookupForm, ContactForm.
+- **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`), TextField, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (6 tones, `sm`), Kbd.
+- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"`, `density="compact"`, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `steps`), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`).
+- **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary, ResultLookupForm, ContactForm.
 - **Templates:** SiteLayout (the only `<main>`), BookingStep.
 - **Pages (fdc-ui Storybook):** full booking flow (service → who → time → details → check answers → confirmation, with idle timeout) and a care-advice page; fixtures in `src/fixtures/site.ts` hold both sites' real menus and footers.
 
-Still needed: the nursing-home logo as a file in code (only the clinic logo is in fdc-ui), a DataTable and staff-tool templates for FDC Manager, and doctor-approved care-advice wording. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
+Still needed: the nursing-home logo as a file in code (only the clinic logo is in fdc-ui), a DataTable with the pagination line and staff-tool templates for FDC Manager and hoso, and doctor-approved care-advice wording. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
