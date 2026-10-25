@@ -91,62 +91,62 @@
 .heading-xl {
   font-family: var(--font-heading);
   font-size: 2rem;
-  line-height: 1.3px;
+  line-height: 1.3;
   font-weight: 700;
 }
 
 .heading-lg {
   font-family: var(--font-heading);
   font-size: 1.625rem;
-  line-height: 1.3px;
+  line-height: 1.3;
   font-weight: 700;
 }
 
 .heading-md {
   font-family: var(--font-heading);
   font-size: 1.375rem;
-  line-height: 1.3px;
+  line-height: 1.3;
   font-weight: 600;
 }
 
 .heading-sm {
   font-family: var(--font-heading);
   font-size: 1.25rem;
-  line-height: 1.35px;
+  line-height: 1.35;
   font-weight: 600;
 }
 
 .body {
   font-family: var(--font-body);
   font-size: 1.125rem;
-  line-height: 1.55px;
+  line-height: 1.55;
   font-weight: 400;
 }
 
 .body-sm {
   font-family: var(--font-body);
   font-size: 1rem;
-  line-height: 1.5px;
+  line-height: 1.5;
   font-weight: 400;
 }
 
 .label {
   font-family: var(--font-body);
   font-size: 1rem;
-  line-height: 1.4px;
+  line-height: 1.4;
   font-weight: 500;
 }
 
 .caption {
   font-family: var(--font-body);
   font-size: 0.875rem;
-  line-height: 1.4px;
+  line-height: 1.4;
   font-weight: 500;
 }
 
 .label-button {
   font-family: var(--font-body);
   font-size: 1.125rem;
-  line-height: 1.3px;
+  line-height: 1.3;
   font-weight: 600;
 }
