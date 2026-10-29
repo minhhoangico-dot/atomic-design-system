@@ -10,6 +10,8 @@
 //       --layer "[data-theme='dark']" --layer "@media (prefers-contrast: more) { [data-theme='dark'] }"
 //
 // pairs.json: [{ "fg": "--ds-color-fg-default", "bg": "--ds-color-bg-surface", "min": 4.5, "note": "body text" }]
+// A MATRIX entry checks every role against every surface it is allowed on, so a pair nobody
+// thought of cannot slip through: { "fg": ["--text-default", "--text-link"], "bg": ["--surface", "--surface-alt"] }.
 // fg/bg may be hex values or custom-property names, resolved from --css. Values
 // are layered like the cascade: :root first, then --scope, then --media (read
 // inside that at-rule, from the --scope selector or :root), then each --layer in
@@ -54,7 +56,9 @@ const resolve = (v) => (v.startsWith('--') ? resolveVar(`var(${v})`, vars) : v);
 
 let pairs;
 if (pairsPath) {
-  pairs = JSON.parse(readFileSync(pairsPath, 'utf8'));
+  pairs = JSON.parse(readFileSync(pairsPath, 'utf8')).flatMap((p) =>
+    [p.fg].flat().flatMap((fg) => [p.bg].flat().map((bg) => ({ ...p, fg, bg }))),
+  );
 } else if (args.length >= 2) {
   pairs = [{ fg: args[0], bg: args[1], min }];
 } else {
@@ -80,7 +84,8 @@ for (const p of pairs) {
   const label = p.fg === fg ? fg : `${p.fg} (${fg})`;
   const blabel = p.bg === bg ? bg : `${p.bg} (${bg})`;
   console.log(
-    `${ok ? 'PASS' : 'FAIL'}  ${ratio.toFixed(2)}:1  need ${need}  [${rating(ratio)}]  ${label} on ${blabel}${p.note ? `  — ${p.note}` : ''}`,
+    // Never round a failure up: 4.498 prints as 4.498, not 4.50.
+    `${ok ? 'PASS' : 'FAIL'}  ${Math.abs(ratio - need) < 0.01 ? (Math.floor(ratio * 1000) / 1000).toFixed(3) : ratio.toFixed(2)}:1  need ${need}  [${rating(ratio)}]  ${label} on ${blabel}${p.note ? `  — ${p.note}` : ''}`,
   );
 }
 if (failures) {

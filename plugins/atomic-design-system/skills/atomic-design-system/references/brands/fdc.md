@@ -39,16 +39,17 @@ Two themes share every token name; set `data-theme="clinic"` (default, blue) or 
 | `brand-200` | #bfd6e8 | #ffdcaa | Section tints (ink text only) |
 | `brand-300` | #84c8f9 | #ffa234 | Bright bands, avatar ring (dark text only) |
 | `group-600` | #1c75bc | #1c75bc | Group blue in every theme |
-| `leaf-500` / `leaf-700` | #8cc63f / #577f20 | #93c2ac / #577f20 | Leaf decorative only / green text 4.7:1 |
+| `leaf-500` / `leaf-700` | #8cc63f / #4f7419 | #93c2ac / #4f7419 | Leaf decorative only / success text ≥ 5.0:1 on every surface |
 | `accent-600`, `accent-cta` | #db227c, #db1f7a | same | **Hotline only** (number, icon, call button) |
 | `ink`, `ink-soft`, `ink-subtle` | #333, #595959, #767676 | same | Text, secondary text, placeholders |
 | `danger` | #b42318 | same | Errors (6.6:1); never pink for errors |
-| `status-info-bg` / `-border` / `-text` | brand-50 / brand-600 / brand-800 | same aliases | Pending work and info tags ("Chờ gửi · còn 27 giây"); text 6.9:1 clinic, 8.1:1 nursing home. Never green for pending |
+| `status-info-bg` / `-border` / `-text` | info-50 / info-600 / info-800 (#eff8ff / #1c75bc / #0a5896) | same, fixed | Pending work and info tags ("Chờ gửi · còn 27 giây"); never green for pending |
+| `status-warning-bg` / `-border` / `-text` | warning-50 / -600 / -800 (#fff6d6 / #a16a00 / #6b4500) | same, fixed | Warnings; amber, never the nursing-home orange |
 | `border-control` | #767676 | same | Field and tile borders (3:1+) |
 
 Semantic aliases components must use: `action-primary-bg`, `action-primary-bg-hover`, `text-on-action`, `text-default`, `text-muted` (→ ink-soft), `text-link`, `focus-ring`, `status-success-text`, `status-error-text`, `status-info-bg`, `status-info-border`, `status-info-text`, `hotline`. Contrast pairs live in fdc-ui `design/contrast-pairs.json`; run `contrast.mjs` with and without `--scope "[data-theme='nursing-home']"` after any color change.
 
-Rules: one primary action per view; pink means "call us", red means "something needs fixing", and they never appear as each other; green never carries white text; logos only on white or `surface-alt`. Links (`text-link`) sit on `surface` or `brand-50`; on `surface-alt` they fall just under 4.5:1 (4.50 clinic, 4.33 nursing home), so use `brand-700` text there.
+Rules: one primary action per view; pink means "call us", red means "something needs fixing", and they never appear as each other; green never carries white text; logos only on white or `surface-alt`. `text-link` is `brand-700` since 2.2 (5.8:1 on `surface-alt`); `brand-600` failed there (4.498:1). Components use role tokens only (`text-link`, `surface-selected`, `action-secondary-edge`, `group-accent`…), never `brand-*`; fdc-ui's `lint:tokens` enforces it, and `contrast` checks every role × allowed surface. Density: `data-density="compact"` on staff tools (16px text, 44px controls).
 
 ## 4. Typography and sizing
 
@@ -113,10 +114,10 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
 
 ## 7. Inventory
 
-In the master and fdc-ui today (35 components, version 2.1):
-- **Layout:** Stack, Inline.
+In the master and fdc-ui today (36 components, version 2.2):
+- **Layout:** Stack, Inline, FieldRow (aligned multi-column fields).
 - **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`), TextField, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (6 tones, `sm`), Kbd.
-- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"`, `density="compact"`, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `steps`), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`).
+- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"`, `density="compact"`, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `steps` with explicit states), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`).
 - **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary, ResultLookupForm, ContactForm.
 - **Templates:** SiteLayout (the only `<main>`), BookingStep.
 - **Pages (fdc-ui Storybook):** full booking flow (service → who → time → details → check answers → confirmation, with idle timeout) and a care-advice page; fixtures in `src/fixtures/site.ts` hold both sites' real menus and footers.

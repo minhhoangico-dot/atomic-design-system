@@ -4,6 +4,8 @@
 //
 //   node lint-tokens.mjs src/components            scan a folder (*.css)
 //   node lint-tokens.mjs src/components --strict   also flag bare px (except 0/1px)
+//   node lint-tokens.mjs src/components --forbid 'brand-*,ink,ink-*'
+//        components may use only role tokens: var(--brand-600) is an error, var(--text-link) is fine
 //
 // Errors  : raw colors (#hex, rgb(), hsl(), oklch(), named colors in color props),
 //           literal font-family names, margin on atom root classes (atoms must not
@@ -19,6 +21,8 @@ import { join, relative, sep } from 'node:path';
 
 const args = process.argv.slice(2);
 const strict = args.includes('--strict');
+const fi = args.indexOf('--forbid');
+const forbid = fi > -1 ? args.splice(fi, 2)[1].split(',').map((g) => new RegExp(`^${g.trim().replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`)) : [];
 const roots = args.filter((a) => !a.startsWith('--'));
 if (!roots.length) {
   console.error('Usage: lint-tokens.mjs <dir|file>... [--strict]');
@@ -69,6 +73,12 @@ for (const root of roots) {
       if (decl.startsWith('--')) return; // defining a component-scoped custom property is fine if its value is a token
       if (HEX.test(decl) || COLOR_FN.test(decl) || (COLOR_PROP.test(decl) && NAMED.test(decl))) {
         report('error', rel, n, 'Raw color. Use a semantic token, e.g. var(--ds-color-bg-brand-emphasis).', raw);
+      }
+      for (const m of decl.matchAll(/var\(--([\w-]+)/g)) {
+        if (forbid.some((re) => re.test(m[1]))) {
+          report('error', rel, n, `Primitive token --${m[1]} in a component. Use a role token (e.g. --text-link, --surface-selected) so a change to one role cannot repaint another.`, raw);
+          break;
+        }
       }
       if (FONT.test(decl)) report('error', rel, n, 'Literal font family. Use var(--ds-font-family-body|heading).', raw);
       if (isAtom && selector === rootClass && /^margin(-[\w]+)?\s*:/.test(decl) && !/:\s*0\s*;?$/.test(decl)) {

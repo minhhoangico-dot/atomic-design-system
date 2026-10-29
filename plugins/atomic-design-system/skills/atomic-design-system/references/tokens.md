@@ -115,6 +115,11 @@ The W3C Design Tokens Community Group format reached its first stable version (2
 
 ## 7. Checks
 
+- **Roles × surfaces, not pairs.** Write contrast checks as matrices: every text role on every surface the system allows it on (`{"fg": ["--text-default", "--text-link", …], "bg": ["--surface", "--surface-alt", …]}`), plus fills × `text-on-*` and UI edges at 3:1. Document the allowed surfaces in the README so the matrix and the guideline say the same thing.
+- **Components use roles only.** `lint-tokens.mjs --forbid 'brand-*,gray-*'` fails a component that names a palette token; give every use a role (`text-link`, `surface-selected`, `action-secondary-edge`) so moving one role cannot repaint another.
+- **Status colors do not follow the brand.** Info, warning, success and error keep the same hue in every brand theme; otherwise a pending state can read as a warning in one product.
+- **Density is a second switch**, independent of brand: `data-density="compact"` remaps body size, control height and container width for staff tools.
+
 - Contrast for every semantic pair in every theme:
   `node scripts/contrast.mjs --css tokens.css --pairs pairs.json` then `--scope "[data-theme='dark']"` and `--media "@media (prefers-contrast: more)"`. Check stacked states with repeated `--layer` flags, applied in order like the cascade: `--layer "[data-theme='dark']" --layer "@media (prefers-contrast: more) { [data-theme='dark'] }"`. Start pairs from `assets/contrast-pairs.template.json`.
 - No raw values in components: `node scripts/lint-tokens.mjs src/components` (hex, rgb(), named colors, literal fonts, px other than 0/1).
