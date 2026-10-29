@@ -111,15 +111,24 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
 - **Layout**
   - Use the compact one-row Header; on phones it collapses to a bar with the person's name, date of birth and record code.
   - Long lists page clearly: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›".
+  - Build staff pages on StaffLayout (version 2.3): grey work surface, white blocks with edges (no shadows), sticky action bar with SaveStatus.
+  - One bar holds the top: PatientContextBar sticky from 1024px up; below it the Header's thin bar. Focused fields never hide under a sticky bar.
+- **Moments (version 2.3)**
+  - The main button follows the moment: unsaved → "Lưu"; saved but missing → "Tiếp tục điền"; complete → "Xem lại trước khi gửi".
+  - The send button names who is sent ("Gửi lên Sở: Ngô Văn Nam"); after it, an undo window in `status-info` ("Chờ gửi · còn 30 giây", "Hủy gửi").
+  - Search accepts text without tone marks (`foldVi`); an empty result says why and how to get back; a failed load keeps the filters and offers "Tải lại".
+  - Measurements use NumberField (unit in the box, decimal comma, range checked on leaving, "Cao"/"Thấp" word tags); coded items use Combobox (name first, code after).
+  - Keyboard shortcut hints show on computers only (StaffLayout `shortcuts`).
+- **Sample screens:** fdc-ui Storybook › Pages › Nhân viên (record list, result entry, review before sending) with mock data in `src/fixtures/ksk.ts`. Start new hoso or FDC Manager screens from them.
 
 ## 7. Inventory
 
-In the master and fdc-ui today (36 components, version 2.2):
+In the master and fdc-ui today (44 components, version 2.3):
 - **Layout:** Stack, Inline, FieldRow (aligned multi-column fields).
-- **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`), TextField, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (6 tones, `sm`), Kbd.
-- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"`, `density="compact"`, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `steps` with explicit states), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`).
-- **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary, ResultLookupForm, ContactForm.
-- **Templates:** SiteLayout (the only `<main>`), BookingStep.
-- **Pages (fdc-ui Storybook):** full booking flow (service → who → time → details → check answers → confirmation, with idle timeout) and a care-advice page; fixtures in `src/fixtures/site.ts` hold both sites' real menus and footers.
+- **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`), TextField (`unit`, `after`), Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (6 tones, `sm`), Kbd.
+- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"` or `"wrap"`, `density="compact"`, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `steps` with explicit states), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`); staff: NumberField, Combobox, SaveStatus, Pagination, Breadcrumb.
+- **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary, ResultLookupForm, ContactForm; staff: DataTable (row-header link covers the cell, states keep the header, Pagination under the rows), PatientContextBar.
+- **Templates:** SiteLayout (the only `<main>`), BookingStep, StaffLayout (compact; context, aside, action bar, shortcuts).
+- **Pages (fdc-ui Storybook):** full booking flow (service → who → time → details → check answers → confirmation, with idle timeout) a care-advice page, and three staff pages (Nhân viên); fixtures in `src/fixtures/site.ts` hold both sites' real menus and footers.
 
-Still needed: the nursing-home logo as a file in code (only the clinic logo is in fdc-ui), a DataTable with the pagination line and staff-tool templates for FDC Manager and hoso, and doctor-approved care-advice wording. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
+Still needed: the nursing-home logo as a file in code (only the clinic logo is in fdc-ui), a phone part picker for long forms (the side list sits above the form on phones), a Checkbox atom (the review page uses a native one), ImportReview once a real file import exists, and doctor-approved care-advice wording. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
