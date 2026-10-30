@@ -85,6 +85,8 @@ Proposal (issue): problem, evidence of need (screenshots, 2+ uses), proposed lev
 ```
 GOV.UK criteria: **useful** (evidence many teams need it) and **unique** (doesn't duplicate) to accept; **usable** (tested with real users including disabled users), **consistent** (reuses styles and patterns), **versatile** (works across contexts and devices) to publish.
 
+**Guidelines follow the same rule as components.** The system's guide holds principles and component rules that every product shares. One product's workflow (its record states, list groups, counts, who sends what, the exact words on its screens) lives in that product's documentation, even when the system's sample pages show it. Test each rule: would a second product use it unchanged? If yes, it goes in the guide, written as a principle with the product's words as an example ("never offer to resend when the outcome is unknown", not the ten states of one app). If not, it goes in the product. Review feedback on a sample page is sorted the same way before it is written down: most of it belongs to the product. Why: every rule in the guide binds products that do not exist yet, and every change to it costs a release.
+
 Three kinds of change (Frost): **modification** (fixes, improvements), **addition** (assume a one-off until a second team says "I want that"), **removal** (deprecate with an alternative). Fix problems found on a product screen **in the system** when they are system problems ("friendly friction"), so every screen benefits.
 
 ## 6. Makers, users and communication

@@ -91,47 +91,38 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
 | Sent | Đã gửi. Chúng tôi sẽ gọi lại cho bạn sớm. |
 | Help line label | Cần giúp? Gọi tổng đài |
 
-### Staff tools (version 2.1, from the hoso app)
-- **Buttons**
-  - One primary button per screen state.
-  - Secondary buttons are white with a brand edge.
-  - An unavailable button has a dashed edge and always says why (Button `disabledReason`).
-  - Labels say exactly what will happen ("Dùng người và lượt khám này", "Nhờ Minh kiểm tra").
-- **Empty and invalid fields**
-  - An empty field is neutral: grey "Chưa điền" (the example "ví dụ 78" while the field has focus), in one message line above the box that keeps its room (TextField `reserve`): the "Cao"/"Thấp" tag and errors use the same line, never the box's row.
-  - Show red only when a typed value is wrong, or after check/review. Errors and the error summary are set by "Xem lại"/"Lưu" and stay until the next press (GOV.UK); nothing moves on focus, typing or leaving a field.
-  - Every field error starts with a red "!" sign (hidden; "Lỗi:" is read) in one 16px semibold line; the 2px red edge is a 1px border plus a 1px inset shadow (the box never grows); a field in error takes a dark-ink focus ring (`text-default`, 3px, 2px gap) in both themes, not the nursing-home orange.
-  - Measurements get at least a 9rem column; every NumberField text fits one line there.
-  - A choice group reports one error with one red bar and shows no "Chưa chọn" hint.
-- **Counts**
+### Staff tools (principles shared by every FDC staff app)
+This profile and the master guide hold only rules a second app would use unchanged. One app's workflow (record states, list groups, counts, who sends, exact screen words) lives in that app's docs: the health-check (KSK) app's are `docs/apps/ksk-nhan-vien.md` in fdc-ui. Sort review feedback the same way before writing it down (`references/governance.md` §5).
+- **Buttons and words**
+  - One primary button per screen state; secondary buttons are white with a brand edge; an unavailable button has a dashed edge and always says why (Button `disabledReason`).
+  - Labels say exactly what will happen ("Dùng người và lượt khám này"); never "OK" or "Tiếp".
+  - The main button follows the moment and never turns into an action that cannot be undone; a send button names who or what it sends.
   - Keep "mục còn thiếu" (to do) and "ô chưa lưu" (unsaved) as separate counts.
-- **Codes and emphasis**
-  - Name first, code after it, lighter: "Tăng huyết áp (I10)". When space is short the name is cut, never the code; codes never break across lines; no monospace (I10 vs 110 checked in Be Vietnam Pro).
-  - Green only for success; pending work uses `status-info`.
-  - Values outside the normal range are amber (`attention`), not red; red is for what must be fixed. Ranges and any confirmation step are set by a doctor.
-  - Status tags are tinted words with a dot, never outlined or solid boxes; notices, field errors and the failed save line carry a sign ("!", "i", "✓") as well as a color; boxed notices and staff result panels are a tint and a sign, with no edge or side bar.
-  - Say who sends: "Đợt này gửi tay: chị xem lại rồi tự gửi từng hồ sơ." as plain text; the auto-send header tag names its batch, tone `info`.
-  - Bold only emphasizes values; attention gets a StatusTag word label.
-- **Shortcuts**
-  - Ctrl combinations only, shown with Kbd. Single letters misfire with Telex.
-- **Layout**
-  - Use the compact one-row Header; on phones it collapses to a bar with the person's name, date of birth and record code.
-  - Long lists page clearly: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›".
-  - Build staff pages on StaffLayout (version 2.3): grey work surface, white blocks with edges (no shadows), sticky action bar with SaveStatus.
-  - One bar holds the top: PatientContextBar sticky from 1024px up; below it the Header's thin bar (name, then date of birth and code as whole chunks). StaffLayout measures its sticky bars and sets the scroll padding from them (`--header-space`, `--context-bar-space`, `--action-bar-space`), so focused fields never hide under a bar; pages never hard-code sticky offsets. On a page whose title comes first (review before sending), the person is a PatientContextBar `variant="block"` that sticks from 1024px.
-- **Moments (versions 2.3–2.4)**
-  - The main button follows the moment: unsaved → "Lưu" (after a failure "Lưu lại"); saved but missing → "Đến mục còn thiếu"; complete → "Xem lại trước khi gửi". It never turns into a real send.
-  - SaveStatus never says "Đã lưu" while a conflict ("Cần xử lý 1 giá trị trước khi lưu") or unsaved change is open.
-  - Sending never blocks the next person: during "Chờ gửi" staff move on ("Người sau: Đặng Thanh Chi"); the waiting record stays findable with "Hủy gửi". While sending, say where each answer lands (tiếp nhận → Sở đã tiếp nhận; bị từ chối → Cần điền hoặc sửa; chưa rõ → stays in Đang gửi).
-  - Send outcomes: "Sở đã tiếp nhận" (code), "Bị từ chối" (reason, fix, resend), "Chưa rõ kết quả" (check status or ask Minh; never "Gửi lại" — it may already be received).
-  - The send button names who is sent ("Gửi lên Sở: Ngô Văn Nam"); after it, an undo window in `status-info`: panel "Chờ gửi lên Sở" with "Còn 30 giây để hủy." under it (a focused heading never counts) and "Hủy gửi"; a status line announces only the start, the move to Đang gửi and a cancel.
-  - ConfirmationPanel step lines: done steps say what happened with ✓, the waited-for step "Chờ …" with a clock (never dashed: dashed means unavailable), a failed step a red "!"; hidden state words for screen readers. Tones `error` (Bị từ chối) and `attention` (Chưa rõ kết quả).
-  - Search accepts text without tone marks (`foldVi`); an empty result says why and how to get back; a failed load keeps the filters and offers "Tải lại".
-  - Measurements use NumberField (unit in the box, decimal comma, range checked on leaving, "Cao"/"Thấp" word tags); coded items use Combobox (name first, code after); several coded items for one question (all diseases found) use CodeList, next to a free-text field for the doctor's own words.
-  - Keyboard shortcut hints show on computers only (StaffLayout `shortcuts`).
-- **Phones (version 2.4):** long forms use FormPartNav in StaffLayout's aside (one "4. Thể lực · còn 2" toggle on phones); record lists use DataTable `stackBelow="phone"` with search before filters and the filter as a Select; filters on desktop are RadioGroup `variant="pills"`; facts are set apart by space, not "·".
-- **Usability test:** `docs/usability-test-v2.4.md` in fdc-ui (Vietnamese, 60–75 minutes per staff member). Run it before building real hoso screens.
-- **Sample screens:** fdc-ui Storybook › Pages › Nhân viên (record list, result entry, review before sending) with mock data in `src/fixtures/ksk.ts`. Start new hoso or FDC Manager screens from them.
+  - Ctrl shortcuts only, shown with Kbd on computers; single letters misfire with Telex.
+- **Fields and errors**
+  - An empty field is neutral. Red only when a typed value is wrong, or after check/review/save with something still missing. Errors and the summary are set by the press and stay until the next press (GOV.UK); nothing moves on focus, typing or leaving a field. A field with a reserved message line shows the page's error only while empty.
+  - NumberField: one message line above the box that keeps its room (TextField `reserve`): "Chưa điền", "ví dụ 78" on focus, amber "Cao"/"Thấp", red errors in short words; at least a 9rem column.
+  - Every field error: red "!" sign (hidden; "Lỗi:" is read), one 16px semibold line, 2px red edge as a 1px border plus 1px inset shadow; dark-ink focus ring (`text-default`) on fields in error in both themes. A choice group reports one error with one red bar and shows no "Chưa chọn" hint.
+  - ErrorSummary `layout="inline"` on staff forms: count heading, short field names as links, no dots, read once.
+  - Out-of-range values are amber (`attention`), not red; ranges and any confirmation step are set by a doctor.
+  - Name first, code after it, lighter: "Tăng huyết áp (I10)". When space is short the name is cut, never the code; codes never break; no monospace. Several coded answers use CodeList beside a free-text field.
+- **States and color**
+  - Each state is one real event; never show a later state because an earlier step succeeded. Each app documents its own states.
+  - Status tags are tinted words with a dot, never outlined or solid; the tag names the state and a count is muted text beside it. Notices, field errors and the failed save line carry a sign ("!", "i", "✓") as well as a color; boxed notices and staff result panels are a tint and a sign, no edge or side bar.
+  - Green only for success; started-but-unfinished work uses `status-info`; bold only emphasizes values.
+- **Saving and hand-offs**
+  - SaveStatus shows exactly one truth (unsaved, saving, saved, failed, conflict) and never "Đã lưu" while a conflict or unsaved change is open.
+  - Say who acts (a person by hand, or an automation naming what it runs for, tone `info`).
+  - An undo window before anything that cannot be taken back (ConfirmationPanel `tone="pending"`, one title, countdown under it); the person may move on and the waiting item stays findable with its undo.
+  - Say where the answer will land; never offer to resend when the outcome is unknown (check or ask a person); only a refusal with a reason reopens the item.
+  - Each moment is heard once; a button that asks something keeps focus until the answer.
+  - ConfirmationPanel steps: done ✓ with what happened, the waited-for step "Chờ …" with a clock (never dashed), a failed step a red "!", hidden state words; stacked without arrows when the row does not fit. Pale panels on staff screens (`emphasis="subtle"`, tones `pending`, `error`, `attention`).
+- **Layout, lists and phones**
+  - Compact one-row Header; on phones a thin bar keeps the person's name, then date of birth and code as whole chunks.
+  - Build staff pages on StaffLayout: grey work surface, white blocks with light edges (no shadows), sticky action bar with SaveStatus. One bar holds the top: PatientContextBar sticky from 1024px (`variant="block"` after a page title). StaffLayout measures its sticky bars (`--header-space`, `--context-bar-space`, `--action-bar-space`) so focused fields never hide under a bar; pages never hard-code sticky offsets.
+  - Phones: FormPartNav in the aside (one toggle), DataTable `stackBelow="phone"`, search before filters, facts set apart by space, not "·".
+  - Lists: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›" (controls named Trước and Sau); filters are RadioGroup `variant="pills"` (a Select on phones); search without tone marks (`foldVi`); empty and failed states say why and keep the filters; one polite live region; an empty table is never a Tab stop.
+- **KSK app (the first staff app):** sample screens in fdc-ui Storybook › Pages › Nhân viên with mock data in `src/fixtures/ksk.ts`; business rules in `docs/apps/ksk-nhan-vien.md`; usability test `docs/usability-test-v2.4.md`. Start new hoso or FDC Manager screens from the samples, and their workflow from that app's own rules.
 
 ## 7. Inventory
 

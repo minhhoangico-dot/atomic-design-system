@@ -35,7 +35,7 @@ These carry the most weight; each has a reason, and the scripts check most of th
 6. **Accessible by construction.** Native elements first; WAI-ARIA patterns for custom widgets; visible `:focus-visible` ring ≥ 2px with 3:1 contrast; targets ≥ 24px (staff) / ≥ 44px (public and older users); labels always visible; errors in text, not color alone; everything works by keyboard and at 200% zoom and 320px width.
 7. **Every user-visible string is a prop with a default**, including aria-labels; numbers, dates, money and phones go through `Intl`. Text must wrap — no fixed heights or clipping — and be tested with the target language's longest words and hardest glyphs.
 8. **Prove components in templates and pages.** Each component gets stories for default, variants, states and stress content; screens get page stories with realistic and worst-case data. Why: isolation hides the breakage real content causes.
-9. **No one-offs in the core.** Domain-specific compositions (DoctorCard, MedicationRow) are *recipes* in the product until a second screen or product needs them. If you are unsure of a level, pick the lower one and move it later — consumers import from the package root, so moves are free.
+9. **No one-offs in the core.** Domain-specific compositions (DoctorCard, MedicationRow) are *recipes* in the product until a second screen or product needs them. If you are unsure of a level, pick the lower one and move it later — consumers import from the package root, so moves are free. The same holds for written rules: one product's workflow and wording go in that product's docs, not the system's guide (`references/governance.md` §5).
 
 ## Mode A — Build the system
 
