@@ -44,7 +44,8 @@ Two themes share every token name; set `data-theme="clinic"` (default, blue) or 
 | `ink`, `ink-soft`, `ink-subtle` | #333, #595959, #767676 | same | Text, secondary text, placeholders |
 | `danger` | #b42318 | same | Errors (6.6:1); never pink for errors |
 | `status-info-bg` / `-border` / `-text` | info-50 / info-600 / info-800 (#eff8ff / #1c75bc / #0a5896) | same, fixed | Pending work and info tags ("Chờ gửi · còn 27 giây"); never green for pending |
-| `status-warning-bg` / `-border` / `-text` | warning-50 / -600 / -800 (#fff6d6 / #a16a00 / #6b4500) | same, fixed | Warnings; amber, never the nursing-home orange |
+| `status-warning-bg` / `-border` / `-text` | warning-50 / -600 / -800 (#fff6d6 / #a16a00 / #6b4500) | same, fixed | Warnings and abnormal values (StatusTag `attention`: "Cao", "Thấp"); amber, never the nursing-home orange |
+| `status-success-bg` / `status-error-bg` | success-50 #edf7e2 / danger-50 #fdeeec (v2.4) | same, fixed | Tinted success and error tags, subtle success panel, boxed notices |
 | `border-control` | #767676 | same | Field and tile borders (3:1+) |
 
 Semantic aliases components must use: `action-primary-bg`, `action-primary-bg-hover`, `text-on-action`, `text-default`, `text-muted` (→ ink-soft), `text-link`, `focus-ring`, `status-success-text`, `status-error-text`, `status-info-bg`, `status-info-border`, `status-info-text`, `hotline`. Contrast pairs live in fdc-ui `design/contrast-pairs.json`; run `contrast.mjs` with and without `--scope "[data-theme='nursing-home']"` after any color change.
@@ -105,6 +106,8 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
 - **Codes and emphasis**
   - Name first, code after it, lighter: "Tăng huyết áp (I10)".
   - Green only for success; pending work uses `status-info`.
+  - Values outside the normal range are amber (`attention`), not red; red is for what must be fixed. Ranges and any confirmation step are set by a doctor.
+  - Status tags are tinted words with a dot, never outlined boxes; notices carry a sign ("!", "i", "✓") as well as a color.
   - Bold only emphasizes values; attention gets a StatusTag word label.
 - **Shortcuts**
   - Ctrl combinations only, shown with Kbd. Single letters misfire with Telex.
@@ -113,22 +116,27 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
   - Long lists page clearly: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›".
   - Build staff pages on StaffLayout (version 2.3): grey work surface, white blocks with edges (no shadows), sticky action bar with SaveStatus.
   - One bar holds the top: PatientContextBar sticky from 1024px up; below it the Header's thin bar. Focused fields never hide under a sticky bar.
-- **Moments (version 2.3)**
-  - The main button follows the moment: unsaved → "Lưu"; saved but missing → "Tiếp tục điền"; complete → "Xem lại trước khi gửi".
+- **Moments (versions 2.3–2.4)**
+  - The main button follows the moment: unsaved → "Lưu" (after a failure "Lưu lại"); saved but missing → "Đến mục còn thiếu"; complete → "Xem lại trước khi gửi". It never turns into a real send.
+  - SaveStatus never says "Đã lưu" while a conflict ("Cần xử lý 1 giá trị trước khi lưu") or unsaved change is open.
+  - Sending never blocks the next person: during "Chờ gửi" staff move on; the waiting record stays findable with "Hủy gửi".
+  - Send outcomes: "Sở đã tiếp nhận" (code), "Bị từ chối" (reason, fix, resend), "Chưa rõ kết quả" (check status or ask Minh; never "Gửi lại" — it may already be received).
   - The send button names who is sent ("Gửi lên Sở: Ngô Văn Nam"); after it, an undo window in `status-info` ("Chờ gửi · còn 30 giây", "Hủy gửi").
   - Search accepts text without tone marks (`foldVi`); an empty result says why and how to get back; a failed load keeps the filters and offers "Tải lại".
-  - Measurements use NumberField (unit in the box, decimal comma, range checked on leaving, "Cao"/"Thấp" word tags); coded items use Combobox (name first, code after).
+  - Measurements use NumberField (unit in the box, decimal comma, range checked on leaving, "Cao"/"Thấp" word tags); coded items use Combobox (name first, code after); several coded items for one question (all diseases found) use CodeList, next to a free-text field for the doctor's own words.
   - Keyboard shortcut hints show on computers only (StaffLayout `shortcuts`).
+- **Phones (version 2.4):** long forms use FormPartNav in StaffLayout's aside (one "4. Thể lực · còn 2" toggle on phones); record lists use DataTable `stackBelow="phone"` with search before filters and the filter as a Select; filters on desktop are RadioGroup `variant="pills"`; facts are set apart by space, not "·".
+- **Usability test:** `docs/usability-test-v2.4.md` in fdc-ui (Vietnamese, 60–75 minutes per staff member). Run it before building real hoso screens.
 - **Sample screens:** fdc-ui Storybook › Pages › Nhân viên (record list, result entry, review before sending) with mock data in `src/fixtures/ksk.ts`. Start new hoso or FDC Manager screens from them.
 
 ## 7. Inventory
 
-In the master and fdc-ui today (44 components, version 2.3):
-- **Layout:** Stack, Inline, FieldRow (aligned multi-column fields).
-- **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`), TextField (`unit`, `after`), Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (6 tones, `sm`), Kbd.
-- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"` or `"wrap"`, `density="compact"`, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `steps` with explicit states), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`); staff: NumberField, Combobox, SaveStatus, Pagination, Breadcrumb.
-- **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary, ResultLookupForm, ContactForm; staff: DataTable (row-header link covers the cell, states keep the header, Pagination under the rows), PatientContextBar.
+In the master and fdc-ui today (48 components, version 2.4):
+- **Layout:** Stack, Inline, FieldRow (aligned multi-column fields: TextField, NumberField, Combobox, Select).
+- **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`), TextField (`unit`, `after`, read-only look), Select, Checkbox, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (7 tones incl. `attention`, tinted with a dot, `sm`), Kbd.
+- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"` or `"wrap"`, `density="compact"`, `variant="pills"` for list filters, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `emphasis="subtle"` on staff screens, `steps` with explicit states: done ✓, waited-for step outlined), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`, type signs); staff: NumberField, Combobox, CodeList, FormPartNav, SaveStatus (incl. `conflict`), Pagination, Breadcrumb.
+- **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary (`layout="inline"` on staff forms), ResultLookupForm, ContactForm; staff: DataTable (row-header link covers the cell, states keep the header, Pagination under the rows, `stackBelow="phone"`), PatientContextBar (facts without dots; actions share a row on phones).
 - **Templates:** SiteLayout (the only `<main>`), BookingStep, StaffLayout (compact; context, aside, action bar, shortcuts).
 - **Pages (fdc-ui Storybook):** full booking flow (service → who → time → details → check answers → confirmation, with idle timeout) a care-advice page, and three staff pages (Nhân viên); fixtures in `src/fixtures/site.ts` hold both sites' real menus and footers.
 
-Still needed: the nursing-home logo as a file in code (only the clinic logo is in fdc-ui), a phone part picker for long forms (the side list sits above the form on phones), a Checkbox atom (the review page uses a native one), ImportReview once a real file import exists, and doctor-approved care-advice wording. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
+Still needed: the nursing-home logo as a file in code (only the clinic logo is in fdc-ui), the results of the staff usability test, doctor-approved normal ranges for vital signs and labs, ImportReview once a real file import exists, and doctor-approved care-advice wording. Nursing-home recipes (ResidentCard, CareScheduleRow, MedicationAdministrationRow, FamilyUpdateCard) stay in the product until the clinic also needs them.
