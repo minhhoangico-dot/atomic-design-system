@@ -26,7 +26,7 @@ Load this profile whenever the work is for FDC: the family-medicine clinic (Côn
 |---|---|---|
 | Public websites, booking, patient/family portal | Patients of all ages, many 60+; adult children booking for parents | `body` 18px, 48px controls, 44px targets, one question per page, hotline on every page |
 | Nursing-home family view | Families checking on a resident, mostly on phones | Same as public; reassuring tone; clear dates and times |
-| Staff tools (FDC Manager, reception, nurses, carers) | Trained daily users, often on tablets | `body-sm` 16px, 48px controls, denser tables, 24-hour times |
+| Staff tools (FDC Manager, reception, nurses, carers) | Trained daily users, often on tablets | `data-density="compact"`: 16px text, 44px controls and targets, denser tables, 24-hour times |
 
 ## 3. Themes and color
 
@@ -43,7 +43,7 @@ Two themes share every token name; set `data-theme="clinic"` (default, blue) or 
 | `accent-600`, `accent-cta` | #db227c, #db1f7a | same | **Hotline only** (number, icon, call button) |
 | `ink`, `ink-soft`, `ink-subtle` | #333, #595959, #767676 | same | Text, secondary text, placeholders |
 | `danger` | #b42318 | same | Errors (6.6:1); never pink for errors |
-| `status-info-bg` / `-border` / `-text` | info-50 / info-600 / info-800 (#eff8ff / #1c75bc / #0a5896) | same, fixed | Pending work and info tags ("Chờ gửi · còn 27 giây"); never green for pending |
+| `status-info-bg` / `-border` / `-text` | info-50 / info-600 / info-800 (#eff8ff / #1c75bc / #0a5896) | same, fixed | Pending work and info tags ("Đang lưu", "Chờ gửi"); never green for pending |
 | `status-warning-bg` / `-border` / `-text` | warning-50 / -600 / -800 (#fff6d6 / #a16a00 / #6b4500) | same, fixed | Warnings and abnormal values (StatusTag `attention`: "Cao", "Thấp"); amber, never the nursing-home orange |
 | `status-success-bg` / `status-error-bg` | success-50 #edf7e2 / danger-50 #fdeeec (v2.4) | same, fixed | Tinted success and error tags, subtle success panel, boxed notices |
 | `border-control` | #767676 | same | Field and tile borders (3:1+) |
@@ -98,14 +98,14 @@ This profile and the master guide hold only rules a second app would use unchang
   - Labels say exactly what will happen ("Dùng người và lượt khám này"); never "OK" or "Tiếp".
   - The main button follows the moment and never turns into an action that cannot be undone; a send button names who or what it sends.
   - Keep "mục còn thiếu" (to do) and "ô chưa lưu" (unsaved) as separate counts.
-  - Ctrl shortcuts only, shown with Kbd on computers; single letters misfire with Telex.
+  - Ctrl shortcuts only, shown with Kbd on computers (StaffLayout `shortcuts`); single letters misfire with Telex.
 - **Fields and errors**
   - An empty field is neutral. Red only when a typed value is wrong, or after check/review/save with something still missing. Errors and the summary are set by the press and stay until the next press (GOV.UK); nothing moves on focus, typing or leaving a field. A field with a reserved message line shows the page's error only while empty.
-  - NumberField: one message line above the box that keeps its room (TextField `reserve`): "Chưa điền", "ví dụ 78" on focus, amber "Cao"/"Thấp", red errors in short words; at least a 9rem column.
+  - NumberField: unit in the box, decimal comma ("52,5"), range checked on leaving; one message line above the box that keeps its room (TextField `reserve`), so the tag never takes the box's width: "Chưa điền", "ví dụ 78" on focus, amber "Cao"/"Thấp", red errors in short words; at least a 9rem column (two side by side from a 375px phone).
   - Every field error: red "!" sign (hidden; "Lỗi:" is read), one 16px semibold line, 2px red edge as a 1px border plus 1px inset shadow; dark-ink focus ring (`text-default`) on fields in error in both themes. A choice group reports one error with one red bar and shows no "Chưa chọn" hint.
   - ErrorSummary `layout="inline"` on staff forms: count heading, short field names as links, no dots, read once.
   - Out-of-range values are amber (`attention`), not red; ranges and any confirmation step are set by a doctor.
-  - Name first, code after it, lighter: "Tăng huyết áp (I10)". When space is short the name is cut, never the code; codes never break; no monospace. Several coded answers use CodeList beside a free-text field.
+  - Name first, code after it, lighter: "Tăng huyết áp (I10)"; coded items use Combobox. When space is short the name is cut, never the code; codes never break; no monospace. Several coded answers use CodeList beside a free-text field.
 - **States and color**
   - Each state is one real event; never show a later state because an earlier step succeeded. Each app documents its own states.
   - Status tags are tinted words with a dot, never outlined or solid; the tag names the state and a count is muted text beside it. Notices, field errors and the failed save line carry a sign ("!", "i", "✓") as well as a color; boxed notices and staff result panels are a tint and a sign, no edge or side bar.
@@ -114,15 +114,15 @@ This profile and the master guide hold only rules a second app would use unchang
   - SaveStatus shows exactly one truth (unsaved, saving, saved, failed, conflict) and never "Đã lưu" while a conflict or unsaved change is open.
   - Say who acts (a person by hand, or an automation naming what it runs for, tone `info`).
   - An undo window before anything that cannot be taken back (ConfirmationPanel `tone="pending"`, one title, countdown under it); the person may move on and the waiting item stays findable with its undo.
-  - Say where the answer will land; never offer to resend when the outcome is unknown (check or ask a person); only a refusal with a reason reopens the item.
-  - Each moment is heard once; a button that asks something keeps focus until the answer.
+  - Before sending, say where the item lands for each reply (accepted, refused, no answer); never offer to resend when the outcome is unknown (check or ask a person); only a refusal with a reason reopens the item.
+  - Each change of state is announced once, in the page's polite status region; a button that asks something keeps focus until the answer.
   - ConfirmationPanel steps: done ✓ with what happened, the waited-for step "Chờ …" with a clock (never dashed), a failed step a red "!", hidden state words; stacked without arrows when the row does not fit. Pale panels on staff screens (`emphasis="subtle"`, tones `pending`, `error`, `attention`).
 - **Layout, lists and phones**
-  - Compact one-row Header; on phones a thin bar keeps the person's name, then date of birth and code as whole chunks.
+  - Compact one-row Header; on phones a thin bar keeps the person's name on one line, then date of birth and code as whole chunks, never taller than the full row.
   - Build staff pages on StaffLayout: grey work surface, white blocks with light edges (no shadows), sticky action bar with SaveStatus. One bar holds the top: PatientContextBar sticky from 1024px (`variant="block"` after a page title). StaffLayout measures its sticky bars (`--header-space`, `--context-bar-space`, `--action-bar-space`) so focused fields never hide under a bar; pages never hard-code sticky offsets.
-  - Phones: FormPartNav in the aside (one toggle), DataTable `stackBelow="phone"`, search before filters, facts set apart by space, not "·".
-  - Lists: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›" (controls named Trước and Sau); filters are RadioGroup `variant="pills"` (a Select on phones); search without tone marks (`foldVi`); empty and failed states say why and keep the filters; one polite live region; an empty table is never a Tab stop.
-- **KSK app (the first staff app):** sample screens in fdc-ui Storybook › Pages › Nhân viên with mock data in `src/fixtures/ksk.ts`; business rules in `docs/apps/ksk-nhan-vien.md`; usability test `docs/usability-test-v2.4.md`. Start new hoso or FDC Manager screens from the samples, and their workflow from that app's own rules.
+  - Widths: a phone is below 640px, a computer 1024px and up; a tablet gets the phone header and part toggle but keeps tables. Phones: FormPartNav in the aside (one toggle that names the part, so the part heading is for screen readers only), DataTable `stackBelow="phone"`, search before filters, facts set apart by space, not "·".
+  - Lists: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›" (controls named Trước and Sau); filters are RadioGroup `variant="pills"` with counts in their labels (a Select on phones); search without tone marks (`foldVi`); empty and failed states say why and keep the filters; one polite live region; an empty table is never a Tab stop.
+- **KSK app (the first staff app):** sample screens in fdc-ui Storybook › Pages › Nhân viên with mock data in `src/fixtures/ksk.ts`; business rules in `docs/apps/ksk-nhan-vien.md`; usability test `docs/usability-test-v2.4.md`. Start a new staff app's screens from the samples' layout and components; write its workflow (states, groups, words) in its own `docs/apps/<app>.md`, never copied from KSK's.
 
 ## 7. Inventory
 
