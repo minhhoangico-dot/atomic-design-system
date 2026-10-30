@@ -98,16 +98,18 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
   - An unavailable button has a dashed edge and always says why (Button `disabledReason`).
   - Labels say exactly what will happen ("Dùng người và lượt khám này", "Nhờ Minh kiểm tra").
 - **Empty and invalid fields**
-  - An empty field is neutral: grey "Chưa điền · ví dụ 78".
-  - Show red only when a typed value is wrong, or after check/review.
-  - A choice group reports one error with one red bar.
+  - An empty field is neutral: grey "Chưa điền · ví dụ 78", in one message line above the box that keeps its room (TextField `reserve`): the "Cao"/"Thấp" tag and errors use the same line, never the box's row.
+  - Show red only when a typed value is wrong, or after check/review. Errors and the error summary are set by "Xem lại"/"Lưu" and stay until the next press (GOV.UK); nothing moves on focus, typing or leaving a field.
+  - Every field error starts with a red "!" sign; on a red edge the focus ring is dark ink, not the nursing-home orange.
+  - A choice group reports one error with one red bar and shows no "Chưa chọn" hint.
 - **Counts**
   - Keep "mục còn thiếu" (to do) and "ô chưa lưu" (unsaved) as separate counts.
 - **Codes and emphasis**
-  - Name first, code after it, lighter: "Tăng huyết áp (I10)".
+  - Name first, code after it, lighter: "Tăng huyết áp (I10)". When space is short the name is cut, never the code; codes never break across lines; no monospace (I10 vs 110 checked in Be Vietnam Pro).
   - Green only for success; pending work uses `status-info`.
   - Values outside the normal range are amber (`attention`), not red; red is for what must be fixed. Ranges and any confirmation step are set by a doctor.
-  - Status tags are tinted words with a dot, never outlined boxes; notices carry a sign ("!", "i", "✓") as well as a color.
+  - Status tags are tinted words with a dot, never outlined or solid boxes; notices, field errors and the failed save line carry a sign ("!", "i", "✓") as well as a color; boxed notices and staff result panels are a tint and a sign, with no edge or side bar.
+  - Say who sends: "Đợt này gửi tay: chị xem lại rồi tự gửi từng hồ sơ." as plain text; the auto-send header tag names its batch, tone `info`.
   - Bold only emphasizes values; attention gets a StatusTag word label.
 - **Shortcuts**
   - Ctrl combinations only, shown with Kbd. Single letters misfire with Telex.
@@ -115,13 +117,14 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
   - Use the compact one-row Header; on phones it collapses to a bar with the person's name, date of birth and record code.
   - Long lists page clearly: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›".
   - Build staff pages on StaffLayout (version 2.3): grey work surface, white blocks with edges (no shadows), sticky action bar with SaveStatus.
-  - One bar holds the top: PatientContextBar sticky from 1024px up; below it the Header's thin bar. Focused fields never hide under a sticky bar.
+  - One bar holds the top: PatientContextBar sticky from 1024px up; below it the Header's thin bar (name, then date of birth and code as whole chunks). StaffLayout measures its sticky bars and sets the scroll padding from them (`--header-space`, `--context-bar-space`, `--action-bar-space`), so focused fields never hide under a bar; pages never hard-code sticky offsets.
 - **Moments (versions 2.3–2.4)**
   - The main button follows the moment: unsaved → "Lưu" (after a failure "Lưu lại"); saved but missing → "Đến mục còn thiếu"; complete → "Xem lại trước khi gửi". It never turns into a real send.
   - SaveStatus never says "Đã lưu" while a conflict ("Cần xử lý 1 giá trị trước khi lưu") or unsaved change is open.
-  - Sending never blocks the next person: during "Chờ gửi" staff move on; the waiting record stays findable with "Hủy gửi".
+  - Sending never blocks the next person: during "Chờ gửi" staff move on ("Sang người sau: Đặng Thanh Chi"); the waiting record stays findable with "Hủy gửi". While sending, say where each answer lands (tiếp nhận → Sở đã tiếp nhận; bị từ chối → Cần điền hoặc sửa; chưa rõ → stays in Đang gửi).
   - Send outcomes: "Sở đã tiếp nhận" (code), "Bị từ chối" (reason, fix, resend), "Chưa rõ kết quả" (check status or ask Minh; never "Gửi lại" — it may already be received).
-  - The send button names who is sent ("Gửi lên Sở: Ngô Văn Nam"); after it, an undo window in `status-info` ("Chờ gửi · còn 30 giây", "Hủy gửi").
+  - The send button names who is sent ("Gửi lên Sở: Ngô Văn Nam"); after it, an undo window in `status-info`: panel "Chờ gửi lên Sở" with "Còn 30 giây để hủy." under it (a focused heading never counts) and "Hủy gửi"; a status line announces only the start, the move to Đang gửi and a cancel.
+  - ConfirmationPanel step lines: done steps say what happened with ✓, the waited-for step "Chờ …" with a clock (never dashed: dashed means unavailable), a failed step a red "!"; hidden state words for screen readers. Tones `error` (Bị từ chối) and `attention` (Chưa rõ kết quả).
   - Search accepts text without tone marks (`foldVi`); an empty result says why and how to get back; a failed load keeps the filters and offers "Tải lại".
   - Measurements use NumberField (unit in the box, decimal comma, range checked on leaving, "Cao"/"Thấp" word tags); coded items use Combobox (name first, code after); several coded items for one question (all diseases found) use CodeList, next to a free-text field for the doctor's own words.
   - Keyboard shortcut hints show on computers only (StaffLayout `shortcuts`).
@@ -133,9 +136,9 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
 
 In the master and fdc-ui today (48 components, version 2.4):
 - **Layout:** Stack, Inline, FieldRow (aligned multi-column fields: TextField, NumberField, Combobox, Select).
-- **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`), TextField (`unit`, `after`, read-only look), Select, Checkbox, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (7 tones incl. `attention`, tinted with a dot, `sm`), Kbd.
-- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"` or `"wrap"`, `density="compact"`, `variant="pills"` for list filters, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone="pending"`, `emphasis="subtle"` on staff screens, `steps` with explicit states: done ✓, waited-for step outlined), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`, type signs); staff: NumberField, Combobox, CodeList, FormPartNav, SaveStatus (incl. `conflict`), Pagination, Breadcrumb.
-- **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary (`layout="inline"` on staff forms), ResultLookupForm, ContactForm; staff: DataTable (row-header link covers the cell, states keep the header, Pagination under the rows, `stackBelow="phone"`), PatientContextBar (facts without dots; actions share a row on phones).
+- **Atoms:** Button (neutral = white secondary / primary / hotline; `disabledReason`; `iconPosition="end"` for next), TextField (`unit`, `reserve` for one stable message line, errors with a "!" sign, read-only look; `after` deprecated), Select, Checkbox, Icon (24 FDC glyphs), Avatar, TextLink, SkipLink, StatusTag (6 tinted tones incl. `attention`, no edges and none solid, `strong` deprecated; the dot on the first line; `sm`), Kbd.
+- **Molecules:** DateInput, PhoneInput, TimeSlotPicker, RadioGroup (`layout="row"` or `"wrap"`, `density="compact"`, `variant="pills"` for list filters, one error per group), SummaryList (read-only `details` per row), CareCard (non-urgent = group blue, urgent = red, emergency = red + dark with "Gọi 115 ngay"), ConfirmationPanel (`tone` success / pending / error / attention, `emphasis="subtle"` on staff screens, `steps` with explicit states: done ✓, waited-for step with a clock, hidden state words), HotlineCard, WorkingHours, ServiceCard, SpecialtyTile, ValueCard, TestimonialCard, NewsCard, ServiceAccordion, FormNotice (`boxed`, `warning`, type signs); staff: NumberField, Combobox, CodeList, FormPartNav, SaveStatus (incl. `conflict`), Pagination, Breadcrumb.
+- **Organisms:** Header (site: menu with tap/keyboard sub-menus, hotline, hours, CTA; `compact` for staff tools with `tools`, `collapseOnScroll`, `compactBar`), Dialog (`wide`, `scrollBody`), Footer (contacts as text, legal lines), IdleTimeoutDialog, ErrorSummary (`layout="inline"` on staff forms: count heading, short field names as links, no dots, read once), ResultLookupForm, ContactForm; staff: DataTable (row-header link covers the cell, states under the table outside the scroll, one polite live region, Pagination under the rows, `stackBelow="phone"`, `variant="plain"` inside a card), PatientContextBar (facts without dots; nav buttons on the name row from 640px; one-line "Người trước" / "Người sau" on phones).
 - **Templates:** SiteLayout (the only `<main>`), BookingStep, StaffLayout (compact; context, aside, action bar, shortcuts).
 - **Pages (fdc-ui Storybook):** full booking flow (service → who → time → details → check answers → confirmation, with idle timeout) a care-advice page, and three staff pages (Nhân viên); fixtures in `src/fixtures/site.ts` hold both sites' real menus and footers.
 
