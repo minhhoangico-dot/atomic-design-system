@@ -122,7 +122,11 @@ const MEASURE = ({ targetMin, minFont }) => {
     const r = el.getBoundingClientRect();
     if (cs.visibility === 'hidden' || cs.display === 'none' || Number(cs.opacity) === 0) return false;
     if (r.width < 2 && r.height < 2) return false; // visually hidden (sr-only) patterns
-    if (/inset\(50%\)|rect\(0/.test(cs.clipPath + cs.clip)) return false;
+    // Visually hidden by clipping, on the element or an ancestor (a hidden <thead> in a stacked table).
+    for (let n = el; n && n !== document.body; n = n.parentElement) {
+      const c = n === el ? cs : getComputedStyle(n);
+      if (/inset\(50%\)|rect\(0/.test(c.clipPath + c.clip)) return false;
+    }
     if (r.right < 0 || r.bottom < 0) return false; // parked off-screen (skip links before focus)
     return !el.closest('[hidden],[inert],[aria-hidden="true"]') || el.closest('dialog[open]');
   };
