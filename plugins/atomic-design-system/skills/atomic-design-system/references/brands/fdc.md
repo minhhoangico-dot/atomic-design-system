@@ -98,9 +98,10 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
   - An unavailable button has a dashed edge and always says why (Button `disabledReason`).
   - Labels say exactly what will happen ("Dùng người và lượt khám này", "Nhờ Minh kiểm tra").
 - **Empty and invalid fields**
-  - An empty field is neutral: grey "Chưa điền · ví dụ 78", in one message line above the box that keeps its room (TextField `reserve`): the "Cao"/"Thấp" tag and errors use the same line, never the box's row.
+  - An empty field is neutral: grey "Chưa điền" (the example "ví dụ 78" while the field has focus), in one message line above the box that keeps its room (TextField `reserve`): the "Cao"/"Thấp" tag and errors use the same line, never the box's row.
   - Show red only when a typed value is wrong, or after check/review. Errors and the error summary are set by "Xem lại"/"Lưu" and stay until the next press (GOV.UK); nothing moves on focus, typing or leaving a field.
-  - Every field error starts with a red "!" sign; on a red edge the focus ring is dark ink, not the nursing-home orange.
+  - Every field error starts with a red "!" sign (hidden; "Lỗi:" is read) in one 16px semibold line; the 2px red edge is a 1px border plus a 1px inset shadow (the box never grows); a field in error takes a dark-ink focus ring (`text-default`, 3px, 2px gap) in both themes, not the nursing-home orange.
+  - Measurements get at least a 9rem column; every NumberField text fits one line there.
   - A choice group reports one error with one red bar and shows no "Chưa chọn" hint.
 - **Counts**
   - Keep "mục còn thiếu" (to do) and "ô chưa lưu" (unsaved) as separate counts.
@@ -117,11 +118,11 @@ Warm, calm, respectful, like a trusted family doctor. "Bạn" in public copy; el
   - Use the compact one-row Header; on phones it collapses to a bar with the person's name, date of birth and record code.
   - Long lists page clearly: "Hiển thị 1–50 trong 2.033 · ‹ Trước · Sau ›".
   - Build staff pages on StaffLayout (version 2.3): grey work surface, white blocks with edges (no shadows), sticky action bar with SaveStatus.
-  - One bar holds the top: PatientContextBar sticky from 1024px up; below it the Header's thin bar (name, then date of birth and code as whole chunks). StaffLayout measures its sticky bars and sets the scroll padding from them (`--header-space`, `--context-bar-space`, `--action-bar-space`), so focused fields never hide under a bar; pages never hard-code sticky offsets.
+  - One bar holds the top: PatientContextBar sticky from 1024px up; below it the Header's thin bar (name, then date of birth and code as whole chunks). StaffLayout measures its sticky bars and sets the scroll padding from them (`--header-space`, `--context-bar-space`, `--action-bar-space`), so focused fields never hide under a bar; pages never hard-code sticky offsets. On a page whose title comes first (review before sending), the person is a PatientContextBar `variant="block"` that sticks from 1024px.
 - **Moments (versions 2.3–2.4)**
   - The main button follows the moment: unsaved → "Lưu" (after a failure "Lưu lại"); saved but missing → "Đến mục còn thiếu"; complete → "Xem lại trước khi gửi". It never turns into a real send.
   - SaveStatus never says "Đã lưu" while a conflict ("Cần xử lý 1 giá trị trước khi lưu") or unsaved change is open.
-  - Sending never blocks the next person: during "Chờ gửi" staff move on ("Sang người sau: Đặng Thanh Chi"); the waiting record stays findable with "Hủy gửi". While sending, say where each answer lands (tiếp nhận → Sở đã tiếp nhận; bị từ chối → Cần điền hoặc sửa; chưa rõ → stays in Đang gửi).
+  - Sending never blocks the next person: during "Chờ gửi" staff move on ("Người sau: Đặng Thanh Chi"); the waiting record stays findable with "Hủy gửi". While sending, say where each answer lands (tiếp nhận → Sở đã tiếp nhận; bị từ chối → Cần điền hoặc sửa; chưa rõ → stays in Đang gửi).
   - Send outcomes: "Sở đã tiếp nhận" (code), "Bị từ chối" (reason, fix, resend), "Chưa rõ kết quả" (check status or ask Minh; never "Gửi lại" — it may already be received).
   - The send button names who is sent ("Gửi lên Sở: Ngô Văn Nam"); after it, an undo window in `status-info`: panel "Chờ gửi lên Sở" with "Còn 30 giây để hủy." under it (a focused heading never counts) and "Hủy gửi"; a status line announces only the start, the move to Đang gửi and a cancel.
   - ConfirmationPanel step lines: done steps say what happened with ✓, the waited-for step "Chờ …" with a clock (never dashed: dashed means unavailable), a failed step a red "!"; hidden state words for screen readers. Tones `error` (Bị từ chối) and `attention` (Chưa rõ kết quả).
