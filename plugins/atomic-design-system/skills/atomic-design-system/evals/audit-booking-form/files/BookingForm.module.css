@@ -1,0 +1,6 @@
+.form { margin: 24px; padding: 12px; font-family: 'Montserrat'; }
+.title { color: #8BC63F; font-size: 13px; text-transform: uppercase; line-height: 1; }
+.input { display: block; height: 28px; border: 1px solid #e5e5e5; margin-bottom: 6px; font-size: 13px; }
+.input:focus { outline: none; }
+.error { color: #DF3386; font-size: 11px; }
+.submit { background: #8BC63F; color: #fff; padding: 6px 10px; display: inline-block; cursor: pointer; }

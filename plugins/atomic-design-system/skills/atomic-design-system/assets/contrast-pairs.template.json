@@ -1,0 +1,16 @@
+[
+  { "fg": "--ds-color-fg-default", "bg": "--ds-color-bg-surface", "min": 4.5, "note": "body text" },
+  { "fg": "--ds-color-fg-default", "bg": "--ds-color-bg-canvas", "min": 4.5, "note": "body text on page" },
+  { "fg": "--ds-color-fg-muted", "bg": "--ds-color-bg-surface", "min": 4.5, "note": "hint / secondary text" },
+  { "fg": "--ds-color-fg-on-emphasis", "bg": "--ds-color-bg-brand-emphasis", "min": 4.5, "note": "primary button label" },
+  { "fg": "--ds-color-fg-on-emphasis", "bg": "--ds-color-bg-brand-emphasis-hover", "min": 4.5, "note": "primary button hover" },
+  { "fg": "--ds-color-fg-on-emphasis", "bg": "--ds-color-bg-critical-emphasis", "min": 4.5, "note": "danger button label" },
+  { "fg": "--ds-color-fg-link", "bg": "--ds-color-bg-surface", "min": 4.5, "note": "links" },
+  { "fg": "--ds-color-fg-brand", "bg": "--ds-color-bg-brand-muted", "min": 4.5, "note": "brand text on tinted panel" },
+  { "fg": "--ds-color-fg-success", "bg": "--ds-color-bg-success-muted", "min": 4.5, "note": "success message" },
+  { "fg": "--ds-color-fg-warning", "bg": "--ds-color-bg-warning-muted", "min": 4.5, "note": "warning message" },
+  { "fg": "--ds-color-fg-critical", "bg": "--ds-color-bg-critical-muted", "min": 4.5, "note": "error message" },
+  { "fg": "--ds-color-fg-critical", "bg": "--ds-color-bg-surface", "min": 4.5, "note": "inline field error" },
+  { "fg": "--ds-color-border-default", "bg": "--ds-color-bg-surface", "min": 3, "note": "input border (non-text 1.4.11)" },
+  { "fg": "--ds-color-border-focus", "bg": "--ds-color-bg-surface", "min": 3, "note": "focus ring (2.4.13)" }
+]

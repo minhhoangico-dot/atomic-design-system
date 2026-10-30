@@ -1,0 +1,152 @@
+/* FDC Medical Group — generated from design/fdc-medical-group/tokens.json by scripts/tokens-from-design.mjs. Do not edit. */
+
+:root,
+[data-theme="clinic"] {
+  --brand-50: #eff8ff;
+  --brand-100: #d2e4f2;
+  --brand-200: #bfd6e8;
+  --brand-300: #84c8f9;
+  --brand-600: #1c75bc;
+  --brand-700: #0b62a7;
+  --brand-800: #0a5896;
+  --group-600: #1c75bc;
+  --leaf-500: #8cc63f;
+  --leaf-700: #577f20;
+  --accent-600: #db227c;
+  --accent-cta: #db1f7a;
+  --ink: #333333;
+  --ink-muted: #666666;
+  --ink-soft: #595959;
+  --ink-subtle: #767676;
+  --surface: #ffffff;
+  --surface-alt: #f6f6f6;
+  --surface-button: #e3e3e3;
+  --border: #dddddd;
+  --border-input: #ced4da;
+  --danger: #b42318;
+  --border-control: #767676;
+  --action-primary-bg: var(--brand-600);
+  --action-primary-bg-hover: var(--brand-700);
+  --text-on-action: var(--surface);
+  --text-default: var(--ink);
+  --text-muted: var(--ink-soft);
+  --text-link: var(--brand-600);
+  --focus-ring: var(--brand-600);
+  --status-success-text: var(--leaf-700);
+  --status-error-text: var(--danger);
+  --hotline: var(--accent-600);
+  --shadow-card: 0 0 15px rgba(0,0,0,0.15);
+  --shadow-sm: 0 0 3px rgba(0,0,0,0.3);
+}
+
+[data-theme="nursing-home"] {
+  --brand-50: #fff7ec;
+  --brand-100: #ffeccf;
+  --brand-200: #ffdcaa;
+  --brand-300: #ffa234;
+  --brand-600: #bf540d;
+  --brand-700: #9d4719;
+  --brand-800: #7d3812;
+  --leaf-500: #93c2ac;
+  --action-primary-bg: var(--brand-600);
+  --action-primary-bg-hover: var(--brand-700);
+  --text-on-action: var(--surface);
+  --text-default: var(--ink);
+  --text-muted: var(--ink-soft);
+  --text-link: var(--brand-600);
+  --focus-ring: var(--brand-600);
+  --status-success-text: var(--leaf-700);
+  --status-error-text: var(--danger);
+  --hotline: var(--accent-600);
+}
+
+:root {
+  --space-5: 0.3125rem;
+  --space-10: 0.625rem;
+  --space-15: 0.9375rem;
+  --space-20: 1.25rem;
+  --space-30: 1.875rem;
+  --space-40: 2.5rem;
+  --space-50: 3.125rem;
+  --radius-sm: 3px;
+  --radius-md: 12px;
+  --radius-leaf: 10px;
+  --radius-lg: 20px;
+  --radius-pill: 30px;
+  --radius-round: 50%;
+  --container-max: 1200px;
+  --control-height: 3rem;
+  --target-min: 2.75rem;
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+  --border-width-strong: 2px;
+  --border-width-heavy: 3px;
+  --ring-width: 5px;
+  --measure: 40rem;
+  --font-heading: Montserrat, "Be Vietnam Pro", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-body: "Be Vietnam Pro", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-sans: "Be Vietnam Pro", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.heading-xl {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  line-height: 1.3px;
+  font-weight: 700;
+}
+
+.heading-lg {
+  font-family: var(--font-heading);
+  font-size: 1.625rem;
+  line-height: 1.3px;
+  font-weight: 700;
+}
+
+.heading-md {
+  font-family: var(--font-heading);
+  font-size: 1.375rem;
+  line-height: 1.3px;
+  font-weight: 600;
+}
+
+.heading-sm {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  line-height: 1.35px;
+  font-weight: 600;
+}
+
+.body {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.55px;
+  font-weight: 400;
+}
+
+.body-sm {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5px;
+  font-weight: 400;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.4px;
+  font-weight: 500;
+}
+
+.caption {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.4px;
+  font-weight: 500;
+}
+
+.label-button {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.3px;
+  font-weight: 600;
+}

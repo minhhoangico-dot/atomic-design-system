@@ -1,0 +1,213 @@
+/*
+ * Design tokens — template. Copy to src/tokens/tokens.css, replace the `ds`
+ * prefix with the system's namespace, and fill the ramps with ramp.mjs output.
+ *
+ * Tier 1  primitives  --ds-color-blue-600     raw values, no intent. Only tokens use them.
+ * Tier 2  semantic    --ds-color-bg-brand-emphasis   intent; re-declared per theme. Components use these.
+ * Tier 3  component   --button-bgColor        declared inside a component's CSS module.
+ *
+ * Grammar: --{ns}-{category}-{property}-{role}-{emphasis}-{state}
+ *   category  color | space | size | radius | font | shadow | motion | z
+ *   property  bg | fg | border          (color only)
+ *   role      neutral | brand | accent | success | warning | critical | info
+ *   emphasis  muted | default | emphasis
+ *   state     hover | active | disabled | selected | focus
+ */
+
+:root {
+  /* ---------- Tier 1: primitives ---------- */
+  /* ramp.mjs '#RRGGBB' --name brand --prefix ds --css */
+  --ds-color-brand-50: #f1f8ff;
+  --ds-color-brand-100: #dceeff;
+  --ds-color-brand-200: #b8dcff;
+  --ds-color-brand-300: #87c4fe;
+  --ds-color-brand-400: #5fa7eb;
+  --ds-color-brand-500: #3e8ed5;
+  --ds-color-brand-600: #1c75bc;
+  --ds-color-brand-700: #0061a3;
+  --ds-color-brand-800: #004a7f;
+  --ds-color-brand-900: #00355c;
+
+  --ds-color-neutral-0: #ffffff;
+  --ds-color-neutral-50: #f7f8f9;
+  --ds-color-neutral-100: #eef0f2;
+  --ds-color-neutral-200: #dde1e5;
+  --ds-color-neutral-300: #c3c9cf;
+  --ds-color-neutral-500: #7a838c;
+  --ds-color-neutral-600: #5c656e;
+  --ds-color-neutral-700: #434b53;
+  --ds-color-neutral-800: #2d3339;
+  --ds-color-neutral-900: #1b1f23;
+  --ds-color-neutral-1000: #0d0f11;
+
+  --ds-color-green-50: #ecf8ef;
+  --ds-color-green-700: #1e6b34;
+  --ds-color-amber-50: #fff6e0;
+  --ds-color-amber-700: #8a5a00;
+  --ds-color-red-50: #fdeeee;
+  --ds-color-red-700: #b42318;
+  /* Dark-theme status steps: light enough for text on dark surfaces. */
+  --ds-color-green-300: #6fcf8e;
+  --ds-color-green-950: #0d2616;
+  --ds-color-amber-300: #f2bd4b;
+  --ds-color-amber-950: #2e1f00;
+  --ds-color-red-300: #f88a80;
+  --ds-color-red-950: #3a0d09;
+
+  /* Space: 4px grid expressed in rem so it scales with the user's font size. */
+  --ds-space-0: 0;
+  --ds-space-100: 0.25rem; /* 4 */
+  --ds-space-200: 0.5rem; /* 8 */
+  --ds-space-300: 0.75rem; /* 12 */
+  --ds-space-400: 1rem; /* 16 */
+  --ds-space-500: 1.5rem; /* 24 */
+  --ds-space-600: 2rem; /* 32 */
+  --ds-space-700: 3rem; /* 48 */
+  --ds-space-800: 4rem; /* 64 */
+
+  --ds-radius-100: 0.25rem;
+  --ds-radius-200: 0.5rem;
+  --ds-radius-300: 0.75rem;
+  --ds-radius-full: 9999px;
+
+  /* Type scale ~1.2 ratio. */
+  --ds-font-size-100: 0.875rem; /* 14 — staff-only metadata, never patient body text */
+  --ds-font-size-200: 1rem; /* 16 */
+  --ds-font-size-300: 1.125rem; /* 18 */
+  --ds-font-size-400: 1.25rem; /* 20 */
+  --ds-font-size-500: 1.5rem; /* 24 */
+  --ds-font-size-600: 1.875rem; /* 30 */
+  --ds-font-size-700: 2.25rem; /* 36 */
+  --ds-font-weight-regular: 400;
+  --ds-font-weight-medium: 500;
+  --ds-font-weight-semibold: 600;
+  --ds-font-weight-bold: 700;
+  --ds-line-height-tight: 1.3; /* headings; ≥1.3 for stacked diacritics */
+  --ds-line-height-body: 1.55;
+
+  /* Feedback (color, opacity, shadow) vs movement (transform). Reduced motion removes
+   * movement but keeps short fades, so state changes stay visible. */
+  --ds-duration-fast: 120ms;
+  --ds-duration-base: 200ms;
+  --ds-duration-move: 250ms;
+  --ds-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---------- Tier 2: semantic (light theme = default) ---------- */
+  --ds-font-family-heading: system-ui, sans-serif;
+  --ds-font-family-body: system-ui, sans-serif;
+  --ds-font-size-body: var(--ds-font-size-200);
+  --ds-font-size-label: var(--ds-font-size-200);
+
+  --ds-color-bg-canvas: var(--ds-color-neutral-50);
+  --ds-color-bg-surface: var(--ds-color-neutral-0);
+  --ds-color-bg-inset: var(--ds-color-neutral-100);
+  --ds-color-bg-brand-muted: var(--ds-color-brand-50);
+  --ds-color-bg-brand-emphasis: var(--ds-color-brand-600);
+  --ds-color-bg-brand-emphasis-hover: var(--ds-color-brand-700);
+  --ds-color-bg-success-muted: var(--ds-color-green-50);
+  --ds-color-bg-warning-muted: var(--ds-color-amber-50);
+  --ds-color-bg-critical-muted: var(--ds-color-red-50);
+  --ds-color-bg-critical-emphasis: var(--ds-color-red-700);
+  --ds-color-bg-disabled: var(--ds-color-neutral-100);
+
+  --ds-color-fg-default: var(--ds-color-neutral-900);
+  --ds-color-fg-muted: var(--ds-color-neutral-600);
+  --ds-color-fg-on-emphasis: var(--ds-color-neutral-0);
+  --ds-color-fg-brand: var(--ds-color-brand-700);
+  --ds-color-fg-success: var(--ds-color-green-700);
+  --ds-color-fg-warning: var(--ds-color-amber-700);
+  --ds-color-fg-critical: var(--ds-color-red-700);
+  --ds-color-fg-disabled: var(--ds-color-neutral-500);
+  --ds-color-fg-link: var(--ds-color-brand-700);
+
+  --ds-color-border-default: var(--ds-color-neutral-500); /* inputs: ≥3:1 vs surface */
+  --ds-color-border-muted: var(--ds-color-neutral-200); /* decorative dividers only */
+  --ds-color-border-focus: var(--ds-color-brand-700);
+  --ds-color-border-critical: var(--ds-color-red-700);
+
+  --ds-space-inset-sm: var(--ds-space-200);
+  --ds-space-inset-md: var(--ds-space-400);
+  --ds-space-inset-lg: var(--ds-space-500);
+  --ds-space-stack-sm: var(--ds-space-200);
+  --ds-space-stack-md: var(--ds-space-400);
+  --ds-space-stack-lg: var(--ds-space-600);
+  --ds-space-inline-sm: var(--ds-space-200);
+  --ds-space-inline-md: var(--ds-space-300);
+
+  --ds-radius-sm: var(--ds-radius-100);
+  --ds-radius-md: var(--ds-radius-200);
+  --ds-radius-lg: var(--ds-radius-300);
+
+  /* Interactive sizes. 2.75rem = 44px: comfortable target for touch and older users. */
+  --ds-size-control-sm: 2rem;
+  --ds-size-control-md: 2.75rem;
+  --ds-size-control-lg: 3.5rem;
+  --ds-size-target-min: 2.75rem;
+  --ds-focus-ring-width: 3px;
+  --ds-focus-ring-offset: 2px;
+
+  color-scheme: light;
+}
+
+/* ---------- Dark theme: same names, new values ----------
+ * Applied via data-theme on <html>. To follow the OS setting without a second
+ * copy of this block, set data-theme before first paint with the small script
+ * in references/tokens.md §6. */
+[data-theme='dark'] {
+  --ds-color-bg-canvas: var(--ds-color-neutral-1000);
+  --ds-color-bg-surface: var(--ds-color-neutral-900);
+  --ds-color-bg-inset: var(--ds-color-neutral-800);
+  --ds-color-bg-brand-muted: var(--ds-color-brand-900);
+  --ds-color-bg-brand-emphasis: var(--ds-color-brand-400);
+  --ds-color-bg-brand-emphasis-hover: var(--ds-color-brand-300);
+  --ds-color-fg-default: var(--ds-color-neutral-50);
+  --ds-color-fg-muted: var(--ds-color-neutral-300);
+  --ds-color-fg-on-emphasis: var(--ds-color-neutral-1000);
+  --ds-color-fg-brand: var(--ds-color-brand-300);
+  --ds-color-fg-link: var(--ds-color-brand-300);
+  --ds-color-border-default: var(--ds-color-neutral-500);
+  --ds-color-border-focus: var(--ds-color-brand-300);
+  --ds-color-bg-success-muted: var(--ds-color-green-950);
+  --ds-color-bg-warning-muted: var(--ds-color-amber-950);
+  --ds-color-bg-critical-muted: var(--ds-color-red-950);
+  --ds-color-bg-critical-emphasis: var(--ds-color-red-300);
+  --ds-color-fg-success: var(--ds-color-green-300);
+  --ds-color-fg-warning: var(--ds-color-amber-300);
+  --ds-color-fg-critical: var(--ds-color-red-300);
+  --ds-color-border-critical: var(--ds-color-red-300);
+  --ds-color-bg-disabled: var(--ds-color-neutral-800);
+  --ds-color-fg-disabled: var(--ds-color-neutral-500);
+  color-scheme: dark;
+}
+
+/* ---------- Large-text / older-adult scale ---------- */
+[data-scale='large'] {
+  --ds-font-size-body: var(--ds-font-size-300);
+  --ds-font-size-label: var(--ds-font-size-300);
+  --ds-size-control-md: 3.5rem;
+  --ds-size-target-min: 3rem;
+  --ds-line-height-body: 1.6;
+}
+
+/* ---------- User preferences ---------- */
+@media (prefers-contrast: more) {
+  :root {
+    --ds-color-fg-muted: var(--ds-color-neutral-800);
+    --ds-color-border-default: var(--ds-color-neutral-800);
+    --ds-color-border-muted: var(--ds-color-neutral-600);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ds-duration-move: 0ms;
+  }
+}
+
+/* In Windows High Contrast / forced colors, components must keep visible
+ * borders and outlines; system colors replace ours automatically. */
+@media (forced-colors: active) {
+  :root {
+    --ds-color-border-focus: Highlight;
+  }
+}

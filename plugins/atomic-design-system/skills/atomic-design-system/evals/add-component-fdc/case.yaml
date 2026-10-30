@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: add-component-fdc
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  A new time-slot component placed at a stated atomic level (molecule) with a reason, built
+  from existing tokens (src/tokens/tokens.css) with no raw colors, using radio-group or aria-pressed/selected
+  semantics with keyboard support, large touch targets for elderly patients, Vietnamese default
+  strings exposed as props, stories covering default, unavailable/selected and stress cases,
+  and a test; exported from src/index.ts.

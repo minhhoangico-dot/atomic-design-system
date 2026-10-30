@@ -1,0 +1,14 @@
+.Button {
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-15);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--text-default);
+  border: 1px solid var(--border-control);
+}
+.Button:where([data-variant='primary']) {
+  background: var(--action-primary-bg);
+  color: var(--text-on-action);
+}
+.Button:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring); outline-offset: var(--focus-ring-offset); }
